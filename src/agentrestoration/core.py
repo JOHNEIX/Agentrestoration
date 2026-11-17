@@ -5,6 +5,8 @@ import json
 import math
 import os
 import shutil
+import time
+import traceback
 import uuid
 from copy import deepcopy
 from importlib.metadata import version, PackageNotFoundError
@@ -13,7 +15,7 @@ from pathlib import Path
 from typing import Literal
 
 from PIL import Image, ImageOps
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
 import truststore
 truststore.inject_into_ssl()
 
@@ -38,7 +40,28 @@ def write_json(path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
     temp = path.with_suffix(path.suffix + ".tmp")
     temp.write_text(json.dumps(value, ensure_ascii=False, indent=2), encoding="utf-8")
-    temp.replace(path)
+    for attempt in range(5):
+        try:
+            temp.replace(path)
+            break
+        except PermissionError:
+            if attempt == 4:
+                raise
+            time.sleep(.05 * (attempt + 1))
+
+
+def error_details(error):
+    """Record validation fields and stack locations without input values or locals."""
+    details = dict(type=type(error).__name__, message=type(error).__name__,
+                   traceback=[dict(file=frame.filename, line=frame.lineno, function=frame.name)
+                              for frame in traceback.extract_tb(error.__traceback__)])
+    if isinstance(error, ValidationError):
+        details["validation"] = [dict(field=".".join(map(str, item["loc"])) or "configuration",
+                                      type=item["type"], message=item["msg"])
+                                 for item in error.errors(include_input=False, include_context=False, include_url=False)]
+        details["message"] = "数据校验失败：" + "；".join(
+            item["field"] + "（" + item["type"] + "）" for item in details["validation"])
+    return details
 
 
 class Settings(BaseModel):
@@ -63,9 +86,13 @@ class Settings(BaseModel):
     image_api_max_bytes: int = Field(default=10 * 1024 * 1024, gt=0)
     tool_weights: str = "weights/gaussian_color_denoising_blind.pth"
     tool_arch: str = "third_party/Restormer/basicsr/models/archs/restormer_arch.py"
+    retinex_weights: str = "weights/retinexformer_lol_v1.pth"
+    retinex_arch: str = "third_party/Retinexformer/RetinexFormer_arch.py"
+    dehaze_weights: str = "weights/dehazeformer_mct_mixed.pth"
+    dehaze_arch: str = "third_party/DehazeFormer/dehazeformer.py"
     device: str = "cpu"
     tool_timeout: float = Field(default=300, gt=0)
-    restoration_task: Literal["auto", "gaussian_denoising"] = "auto"
+    restoration_task: Literal["auto", "gaussian_denoising", "low_light", "dehazing"] = "auto"
 
     @model_validator(mode="after")
     def thresholds(self):

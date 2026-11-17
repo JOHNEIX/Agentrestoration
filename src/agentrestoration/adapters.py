@@ -218,6 +218,8 @@ class Detector:
 
 
 class Restormer:
+    name = "Restormer"
+    worker_name = "restormer"
     def __init__(self, settings):
         self.s = settings
 
@@ -234,7 +236,7 @@ class Restormer:
         env = os.environ.copy()
         env["PYTHONPATH"] = str(ROOT / "src")
         result = subprocess.run([sys.executable, "-m", "agentrestoration.tool_worker", str(original.resolve()),
-            str(job.path.resolve()), str(config.resolve())], env=env, capture_output=True, timeout=self.s.tool_timeout)
+            str(job.path.resolve()), str(config.resolve()), self.worker_name], env=env, capture_output=True, timeout=self.s.tool_timeout)
         if result.returncode:
             error_path = job.path / "tool_error.json"
             kind = json.loads(error_path.read_text(encoding="utf-8")).get("kind", "subprocess_failed") if error_path.exists() else "subprocess_failed"

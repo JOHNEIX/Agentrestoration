@@ -32,6 +32,31 @@ def test_budget(tmp_path):
     with pytest.raises(RuntimeError): job.reserve("tool")
 
 
+@pytest.mark.parametrize("failures", [2, 5])
+def test_atomic_record_handles_temporary_windows_lock(tmp_path, monkeypatch, failures):
+    from pathlib import Path
+    from agentrestoration import core
+    destination = tmp_path / "record.log"
+    destination.write_text("old", encoding="utf-8")
+    replace = Path.replace
+    calls = []
+    def locked(path, target):
+        calls.append(path)
+        if len(calls) <= failures:
+            raise PermissionError("file held open")
+        return replace(path, target)
+    monkeypatch.setattr(Path, "replace", locked)
+    monkeypatch.setattr(core.time, "sleep", lambda delay: None)
+    if failures == 5:
+        with pytest.raises(PermissionError):
+            core.write_json(destination, {"updated": True})
+        assert destination.read_text(encoding="utf-8") == "old"
+    else:
+        core.write_json(destination, {"updated": True})
+        assert '"updated": true' in destination.read_text(encoding="utf-8")
+        assert len(calls) == 3
+
+
 @pytest.mark.parametrize("size,status", [((200,200),"uncertain"), ((101,100),"fail"), ((120,100),"fail")])
 def test_ratio(tmp_path, size, status):
     a, b = tmp_path / "a.png", tmp_path / "b.png"

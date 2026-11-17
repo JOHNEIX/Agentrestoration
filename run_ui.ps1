@@ -1,10 +1,20 @@
-param([switch]$NoBrowser)
+param([switch]$NoBrowser, [switch]$Restart)
 
 $uiUrl = 'http://127.0.0.1:8501'
 try {
     $health = Invoke-WebRequest -Uri "$uiUrl/_stcore/health" -UseBasicParsing -TimeoutSec 3
     $alreadyRunning = $health.StatusCode -eq 200 -and ([string]$health.Content).Trim() -eq 'ok'
 } catch {
+    $alreadyRunning = $false
+}
+
+if ($alreadyRunning -and $Restart) {
+    $listener = Get-NetTCPConnection -LocalPort 8501 -State Listen | Select-Object -First 1
+    $uiProcess = Get-CimInstance Win32_Process -Filter "ProcessId = $($listener.OwningProcess)"
+    if ($uiProcess.CommandLine -notmatch '-m\s+streamlit\s+run\s+ui[/\\]app\.py') {
+        throw 'Port 8501 belongs to another service.'
+    }
+    Stop-Process -Id $listener.OwningProcess -ErrorAction Stop
     $alreadyRunning = $false
 }
 

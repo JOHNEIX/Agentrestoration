@@ -31,6 +31,7 @@ def test_app_initial_layout():
     assert [h.value for h in app.subheader]==["01  修复设置","02  图片对比","03  处理流程"]
     assert app.button[0].disabled
     assert len(app.text_area)==1
+    assert app.selectbox[0].options == ["自动处理", "合成高斯去噪", "低光增强", "去雾"]
 
 
 def test_app_result_selection_does_not_rerun_job(tmp_path,monkeypatch):
@@ -78,3 +79,24 @@ def test_app_initialization_error_is_displayed(monkeypatch):
     assert not app.exception
     assert not app.session_state["running"]
     assert app.session_state["snapshot"]["status"]=="execution_failed"
+
+
+def test_app_config_error_shows_task_log_and_field(tmp_path, monkeypatch):
+    import pytest
+    pytest.importorskip("streamlit")
+    from streamlit.testing.v1 import AppTest
+    from ui import service
+    monkeypatch.setattr(service, "ROOT", tmp_path)
+    (tmp_path / "configs").mkdir()
+    (tmp_path / "configs/default.json").write_text('{"timeout": -1}', encoding="utf-8")
+    app = AppTest.from_file(Path(__file__).resolve().parents[1] / "ui/app.py")
+    app.session_state["running"] = True
+    app.session_state["pending"] = dict(path="unused", requirement="restore", task="auto")
+    app.run(timeout=20)
+    assert not app.exception
+    snapshot = app.session_state["snapshot"]
+    assert snapshot["status"] == "execution_failed"
+    assert Path(snapshot["record_file"]).is_file()
+    assert any("timeout" in error.value for error in app.error)
+    assert any("任务日志" in caption.value for caption in app.caption)
+    assert len(app.get("download_button")) == 1

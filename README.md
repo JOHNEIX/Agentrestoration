@@ -14,6 +14,8 @@
 
 脚本自动复用已经运行的工作台，重复执行会打开现有页面。使用 `.\run_ui.ps1 -NoBrowser` 可启动或检查服务并保留浏览器当前页面。
 
+更新代码或配置后，执行 `.\run_ui.ps1 -Restart` 重新加载服务。初始化阶段即创建任务日志，配置校验失败也会保存字段、错误类型及代码位置，页面显示对应日志目录。
+
 浏览器打开 [本地图像修复工作台](http://127.0.0.1:8501)。左侧选择图片、填写修复要求和任务类型，中间对比原图与候选，右侧实时显示流程。成功节点为绿色，未通过节点为红色，进行中节点为蓝色，等待和跳过为灰色。重试与工具回退按每次尝试展开。
 
 处理完成后可切换候选、显示检测框、查看实际修复指令，并下载输出图片和处理记录。
@@ -31,6 +33,15 @@
 ```
 
 参数：`--requirement` 修复要求、`--config` 配置文件、`--output` 输出目录、`--task` 任务类型。默认 `auto` 使用分析、编辑和验证；专用工具按已配置且适用的任务启用。
+
+低光增强与去雾回退：
+
+```powershell
+.\run.ps1 '低光图片.png' --task low_light
+.\run.ps1 '有雾图片.png' --task dehazing
+```
+
+工作台任务选项包含“自动处理”“合成高斯去噪”“低光增强”和“去雾”。自动处理会根据明确的低光或雾退化启用对应工具；选择任务类型后，仅启用与任务及退化分析相符的工具。
 
 也可以直接调用 Python：
 
@@ -71,7 +82,24 @@ python -m venv .venv
 
 识图模型为 `qwen3-vl-plus`，编辑模型为 `qwen-image-2.1-turbo`。凭据从本地 `api.txt` 读取，或使用 `VLM_API_KEY`、`IMAGE_API_KEY` 环境变量；环境变量优先。地址和参数见 `configs/default.json`。运行时图片会发送至配置的外部 API。
 
-专用工具采用 Restormer 彩色高斯去噪，使用作者权重和分块推理。
+专用工具使用作者权重：
+
+| 工具 | 权重 | 任务 |
+| --- | --- | --- |
+| Restormer | 彩色高斯盲去噪 | `gaussian_denoising` |
+| Retinexformer | LOL-v1 | `low_light` |
+| DehazeFormer | 作者演示版 MCT，混合数据训练 | `dehazing` |
+
+工具统一由 `restoration_tools.py` 选择，共用每任务一次工具流程的额度，结果进入结构和效果验证。混合退化优先匹配程度更重的适用任务。权重位于 `weights/`，作者架构、许可及来源记录位于 `third_party/<工具名>/`。Restormer 和 Retinexformer 使用分块推理；DehazeFormer-MCT 在 256×256 预览上预测映射参数，再对整图应用曲线。MCT 坐标张量已适配输入设备，改动与原始文件哈希记录在 `source.json`。
+
+单独准备新增工具：
+
+```powershell
+.\.venv\Scripts\python.exe scripts/setup_assets.py --tool retinexformer
+.\.venv\Scripts\python.exe scripts/setup_assets.py --tool dehazeformer
+```
+
+新增工具从作者 Hugging Face 发布地址下载权重，推理使用现有 PyTorch、einops 环境。模型来源见 [Retinexformer 作者仓库](https://github.com/caiyuanhao1998/Retinexformer) 与 [DehazeFormer 作者演示](https://huggingface.co/spaces/IDKiro/DehazeFormer_Demo)。
 
 编辑接口输入限制通过 `image_api_max_bytes` 配置，默认 10 MB。较大的基准图会单独生成适合发送的 JPEG，优先保留分辨率；发送尺寸、体积和编码参数保存在请求记录中，原图和结构检查基准图保持原样。API 错误码、脱敏说明和请求 ID 写入任务事件，供页面与日志查看。
 

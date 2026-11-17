@@ -37,8 +37,9 @@ with left:
     st.subheader("01  修复设置")
     upload = st.file_uploader("选择需要修复的图片", type=["jpg", "jpeg", "png"], disabled=state.running)
     requirement = st.text_area("修复要求", "改善质量并尽量保留原始内容、构图和物体位置。", height=150, disabled=state.running)
-    task_label = st.selectbox("处理任务", ["自动处理", "合成高斯去噪"], disabled=state.running)
-    task = "auto" if task_label == "自动处理" else "gaussian_denoising"
+    tasks = {"自动处理": "auto", "合成高斯去噪": "gaussian_denoising", "低光增强": "low_light", "去雾": "dehazing"}
+    task_label = st.selectbox("处理任务", list(tasks), disabled=state.running)
+    task = tasks[task_label]
     show_boxes = st.toggle("显示检测框", value=False, disabled=state.running)
     token = upload.file_id if upload else None
     if token != state.upload_token and not state.running:
@@ -111,6 +112,8 @@ def render(snapshot, selected=None):
                 st.text(prompt_text(directory, candidate, snapshot))
         elif snapshot.get("error"):
             st.error("处理执行失败：" + snapshot["error"])
+        if snapshot.get("record_file"):
+            st.caption("任务日志：" + str(Path(snapshot["record_file"]).parent))
 
 
 available = [c for c in snapshot.get("candidates", []) if c.get("path")]

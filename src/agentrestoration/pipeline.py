@@ -2,12 +2,13 @@ import shutil
 import time
 
 from .adapters import APIError
-from .core import ROOT, Job, choose_route, prepare, structure, write_json
+from .core import ROOT, Job, choose_route, error_details, prepare, structure, write_json
 
 
 def run(path, requirement, settings, api, detector, tool, output="runs", on_event=None,
-        *, log_root=ROOT / "log/tasks"):
-    job = Job(output, settings, on_event=on_event, log_root=log_root)
+        *, log_root=ROOT / "log/tasks", job=None):
+    if job is None:
+        job = Job(output, settings, on_event=on_event, log_root=log_root)
     job.data.update(requirement=requirement, provenance=getattr(api, "provenance", "real"), status="processing")
     started = time.monotonic()
     current = ("prepare", "图片准备")
@@ -37,6 +38,9 @@ def run(path, requirement, settings, api, detector, tool, output="runs", on_even
             candidate_id = f"{route}_{number}"
             label = ("首次编辑" if number == 1 else "编辑重试") if route == "image" else "工具回退"
             candidate_record = dict(id=candidate_id, attempt=attempt, label=label, source=route, status="executing")
+            if route == "tool":
+                candidate_record["tool_name"] = getattr(tool, "name", "专用工具")
+                label = candidate_record["label"] = "工具回退 · " + candidate_record["tool_name"]
             if route == "image":
                 candidate_record["prompt_file"] = f"prompts/image_{number}.txt"
             job.data["candidates"].append(candidate_record)
@@ -82,14 +86,15 @@ def run(path, requirement, settings, api, detector, tool, output="runs", on_even
                     severe = verdict.structure_preserved is False and verdict.structure_issue == "count_change"
                 prompt = analysis.edit_prompt + "\nCorrect previous failure: " + feedback + "\nAlways preserve original content and composition."
             except Exception as error:
-                message = str(error) if isinstance(error, APIError) else type(error).__name__
-                candidate_record.update(status="execution_failed", error=message)
+                details = error_details(error)
+                message = str(error) if isinstance(error, APIError) else details["message"]
+                candidate_record.update(status="execution_failed", error=message, error_details=details)
                 end("failed", reason=message)
                 for phase in ("structure", "quality"):
                     node = next(s for s in job.data["steps"] if s["id"] == f"{candidate_id}:{phase}")
                     if node["status"] == "pending":
                         job.step(node["id"], node["title"], "skipped", attempt=attempt, reason="前序阶段执行失败")
-                job.event("execution_failed", error=message)
+                job.event("execution_failed", error=message, error_details=details)
                 if route == "image" and job.data["image_requests_sent"] == images_before:
                     break
 
@@ -105,9 +110,11 @@ def run(path, requirement, settings, api, detector, tool, output="runs", on_even
             if not has_rejection:
                 job.data["error"] = next((c["error"] for c in reversed(job.data["candidates"]) if c.get("error")), "execution_failed")
     except Exception as error:
-        message = str(error) if isinstance(error, APIError) else type(error).__name__
-        job.data.update(status="execution_failed", error=message)
+        details = error_details(error)
+        message = str(error) if isinstance(error, APIError) else details["message"]
+        job.data.update(status="execution_failed", error=message, error_details=details)
         end("failed", reason=message)
+        job.event("execution_failed", error=message, error_details=details)
     finally:
         job.data["elapsed_seconds"] = time.monotonic() - started
         reason = {"completed": "修复结果已接受", "needs_review": "保留原图，候选可供复核", "execution_failed": "处理执行失败"}[job.data["status"]]

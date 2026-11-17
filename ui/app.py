@@ -20,16 +20,34 @@ div[data-testid="stColumn"]>div[data-testid="stVerticalBlockBorderWrapper"]{back
 .eyebrow{font:600 11px system-ui;letter-spacing:2px;color:#6483ac;margin-bottom:10px}
 .intro{color:#728198;font-size:14px;margin-top:-8px;margin-bottom:28px}
 button[kind="primary"]{background:#2878e3;border:0;border-radius:9px}
+.st-key-shutdown_workbench button{background:#dc2626!important;color:#fff!important;border:1px solid #dc2626!important;border-radius:9px}
+.st-key-shutdown_workbench button:hover{background:#b91c1c!important;border-color:#b91c1c!important}
+.st-key-shutdown_workbench button:disabled{opacity:.45}
 div[data-testid="stImage"] img{border-radius:10px;object-fit:contain}
 </style>""")
-st.html('<div class="eyebrow">AGENTRESTORATION / WORKSPACE</div>')
-st.title("图像修复工作台")
-st.html('<div class="intro">选择图片，描述修复目标，查看智能体的每一步处理。</div>')
-
 state = st.session_state
 state.setdefault("running", False)
 state.setdefault("snapshot", {})
 state.setdefault("upload_token", None)
+state.setdefault("exiting", False)
+heading, actions = st.columns([5, 1], vertical_alignment="bottom")
+with heading:
+    st.html('<div class="eyebrow">AGENTRESTORATION / WORKSPACE</div>')
+    st.title("图像修复工作台")
+with actions:
+    exit_pressed = st.button("退出工作台", key="shutdown_workbench", type="primary",
+                             use_container_width=True, disabled=state.running or state.exiting,
+                             help="停止后台服务；处理图片时请等待任务完成。")
+if exit_pressed:
+    try:
+        service.shutdown()
+        state.exiting = True
+    except RuntimeError as error:
+        st.error(str(error))
+if state.exiting:
+    st.success("工作台正在退出，可以关闭此页面。再次使用请运行 run_ui.ps1。")
+    st.stop()
+st.html('<div class="intro">选择图片，描述修复目标，查看智能体的每一步处理。</div>')
 snapshot = state.snapshot
 left, middle, right = st.columns([1.05, 2.4, 1.3], gap="medium", border=True)
 
@@ -46,7 +64,7 @@ with left:
         state.upload_token = token
         state.snapshot = snapshot = {}
         state.pop("selected_candidate", None)
-    pressed = st.button("开始修复", type="primary", use_container_width=True,
+    pressed = st.button("开始修复", key="start_repair", type="primary", use_container_width=True,
                         disabled=state.running or upload is None)
     st.caption("图片通过已配置的 API 进行分析与编辑。")
     counts = st.empty()

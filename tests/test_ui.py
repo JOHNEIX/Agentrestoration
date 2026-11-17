@@ -29,7 +29,8 @@ def test_app_initial_layout():
     app=AppTest.from_file(Path(__file__).resolve().parents[1]/"ui/app.py").run(timeout=20)
     assert not app.exception
     assert [h.value for h in app.subheader]==["01  修复设置","02  图片对比","03  处理流程"]
-    assert app.button[0].disabled
+    assert app.button(key="start_repair").disabled
+    assert not app.button(key="shutdown_workbench").disabled
     assert len(app.text_area)==1
     assert app.selectbox[0].options == ["自动处理", "合成高斯去噪", "低光增强", "去雾"]
 
@@ -53,8 +54,8 @@ def test_app_result_selection_does_not_rerun_job(tmp_path,monkeypatch):
     app=AppTest.from_file(Path(__file__).resolve().parents[1]/"ui/app.py")
     app.run(timeout=20)
     app.file_uploader[0].set_value(("input.png",source.read_bytes(),"image/png")).run()
-    assert not app.button[0].disabled
-    app.button[0].click().run(timeout=30)
+    assert not app.button(key="start_repair").disabled
+    app.button(key="start_repair").click().run(timeout=30)
     assert not app.exception
     assert app.session_state["snapshot"]["status"]=="completed"
     record_path=Path(app.session_state["snapshot"]["record_file"])
@@ -100,3 +101,31 @@ def test_app_config_error_shows_task_log_and_field(tmp_path, monkeypatch):
     assert any("timeout" in error.value for error in app.error)
     assert any("任务日志" in caption.value for caption in app.caption)
     assert len(app.get("download_button")) == 1
+
+
+def test_exit_button_calls_shutdown_once(monkeypatch):
+    import pytest
+    pytest.importorskip("streamlit")
+    from streamlit.testing.v1 import AppTest
+    from ui import service
+    calls = []
+    monkeypatch.setattr(service, "shutdown", lambda: calls.append("shutdown"))
+    app = AppTest.from_file(Path(__file__).resolve().parents[1] / "ui/app.py").run(timeout=20)
+    app.button(key="shutdown_workbench").click().run()
+    assert not app.exception
+    assert calls == ["shutdown"]
+    assert app.session_state["exiting"]
+    assert any("工作台正在退出" in message.value for message in app.success)
+    app.run()
+    assert calls == ["shutdown"]
+    assert app.button(key="shutdown_workbench").disabled
+
+
+def test_exit_button_disabled_while_processing():
+    import pytest
+    pytest.importorskip("streamlit")
+    from streamlit.testing.v1 import AppTest
+    app = AppTest.from_file(Path(__file__).resolve().parents[1] / "ui/app.py")
+    app.session_state["running"] = True
+    app.run(timeout=20)
+    assert app.button(key="shutdown_workbench").disabled

@@ -9,6 +9,7 @@ api.*.txt
 
 # Python environments and generated files
 .venv/
+.runtime/
 venv/
 env/
 __pycache__/

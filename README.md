@@ -6,13 +6,15 @@
 
 ## 运行
 
-首次安装（Windows，先安装 Python 3.12 64 位）：
+首次安装（Windows 64 位）：
 
 ```powershell
 .\install.cmd
 ```
 
-也可双击 `install.cmd`。脚本在项目目录创建 `.venv`，按锁文件安装依赖，下载 YOLO11n 与三种修复工具，检查配置，并在终端隐藏输入 API 密钥。两种 API 共用密钥时，第二次输入直接回车。已有的 `api.txt` 保留。准备完成后自动打开工作台。
+也可双击 `install.cmd`。脚本自动查找 Python 3.12；本机没有合适版本时，从 CPython 官方 NuGet 包下载 Python 3.12.9 64 位，校验 SHA-512 后解压到项目的 `.runtime/`。然后创建 `.venv`，按锁文件安装依赖，下载 YOLO11n 与三种修复工具，检查配置，并在终端隐藏输入 API 密钥。两种 API 共用密钥时，第二次输入直接回车。已有的 `api.txt` 保留。准备完成后自动打开工作台。
+
+使用者无需预先安装 Python；自动下载的运行时仅供本项目使用，不修改系统 PATH 或注册 Python 启动器。Python 包来自 [CPython 文档介绍的 NuGet 发布渠道](https://docs.python.org/3.12/using/windows.html#the-nuget-org-packages)，压缩包与校验文件保存在 `.cache/downloads/`。
 
 API 文件位于项目根目录，与 README 同级；格式见 [api.example.txt](api.example.txt)。也可先将示例复制为 `api.txt`，在“识别API”和“编辑API”各自下一行填写密钥。服务地址和模型名位于 `configs/default.json`，应与密钥对应的平台一致。安装检查不发送修复请求。
 
@@ -22,6 +24,7 @@ API 文件位于项目根目录，与 README 同级；格式见 [api.example.txt
 .\install.cmd -NoStart                                  # 安装完成后暂不启动
 .\install.cmd -CheckOnly -NonInteractive                 # 检查现有环境与模型资产
 .\install.cmd -PythonPath 'F:\Python312\python.exe'       # 指定 Python
+.\install.cmd -LocalPython                              # 新建环境时使用项目专用 Python
 .\install.cmd -NonInteractive                            # 自动安装，API 通过文件或环境变量配置
 ```
 

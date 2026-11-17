@@ -1,5 +1,6 @@
 param(
     [string]$PythonPath,
+    [switch]$LocalPython,
     [switch]$NonInteractive,
     [switch]$NoStart,
     [switch]$CheckOnly
@@ -25,13 +26,7 @@ function Invoke-CheckedPython {
     if ($LASTEXITCODE -ne 0) { throw "Python step failed (exit $LASTEXITCODE). Fix the error above and run install.ps1 again." }
 }
 
-function Test-PythonVersion {
-    param([string]$Executable, [string[]]$Prefix=@())
-    try {
-        & $Executable @Prefix -c 'import sys,struct; sys.exit(0 if sys.version_info[:2]==(3,12) and struct.calcsize(''P'')==8 else 1)' *> $null
-        return $LASTEXITCODE -eq 0
-    } catch { return $false }
-}
+. (Join-Path $projectRoot 'scripts/bootstrap_python.ps1')
 
 function Read-ApiKey {
     param([string]$Prompt)
@@ -47,15 +42,18 @@ try {
         if ($CheckOnly) { throw 'No .venv found. Run install.ps1 first.' }
         $executable = $PythonPath
         $prefix = @()
+        if ($PythonPath -and $LocalPython) { throw 'Use either -PythonPath or -LocalPython.' }
         if ($PythonPath) {
             if (-not (Test-PythonVersion $PythonPath)) { throw 'PythonPath must point to Python 3.12 (64-bit).' }
+        } elseif ($LocalPython) {
+            $executable = Install-ProjectPython $projectRoot
         } else {
             if ((Get-Command py -ErrorAction SilentlyContinue) -and (Test-PythonVersion 'py' @('-3.12'))) {
                 $executable = 'py'; $prefix = @('-3.12')
             } elseif ((Get-Command python -ErrorAction SilentlyContinue) -and (Test-PythonVersion 'python')) {
                 $executable = 'python'
             } else {
-                throw 'Install Python 3.12 (64-bit), or use: .\install.ps1 -PythonPath C:\path\python.exe'
+                $executable = Install-ProjectPython $projectRoot
             }
         }
         Write-Host '[1/5] Creating .venv in the project directory...'

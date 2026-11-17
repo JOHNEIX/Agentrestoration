@@ -1,0 +1,56 @@
+# Local credentials and their backups
+.env
+.env.*
+!.env.example
+api.txt
+api.txt.*
+api.*.txt
+
+# Python environments and generated files
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Caches and test outputs
+.cache/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+tests/results*.xml
+
+# Task artifacts, logs, and generated experiment images
+/runs/
+/log/
+/experiments/runs/
+/experiments/calibration/
+/experiments/results.partial.json
+/experiment_archives/
+/experiments/archives/
+*.log
+
+# Downloaded model assets and upstream implementation
+/weights/
+/third_party/
+
+# Editor, operating system, and temporary files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.tmp
+*.bak
+*.swp
+*.swo
+*~

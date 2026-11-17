@@ -1,0 +1,1392 @@
+[
+  {
+    "scene": "101085",
+    "group": "A",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 23.01600000000326,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_211700_b6fefe5eea",
+    "offline_verdict": {
+      "decision": "uncertain",
+      "quality_improved": true,
+      "structure_preserved": null,
+      "issues": [
+        "suspected_count_change: original detection reports 2 persons, candidate has 0 detections; visual inspection shows 3 statues in both images, but object detector failed to detect any in candidate"
+      ],
+      "reason": "Object detection output indicates 'candidate': [] and 'unmatched_original': [0,1], suggesting zero detected persons in candidate vs two in original. However, visual inspection confirms three stone statues are present in both images with identical composition, pose, and spatial arrangement—no additions, deletions, or movement. The discrepancy arises from detector failure (likely due to class mismatch: statues ≠ 'person'), not image alteration. Since the instruction requires strict adherence to detection metadata *and* explicit review of objects when uncertain, and we cannot confirm whether the detector’s 'person' class was misapplied or if content truly changed, the status remains uncertain. Do not accept without verification.",
+      "retry_instruction": "Re-run object detection with correct class labels (e.g., 'statue', 'sculpture') or manually verify all objects against original; ensure no structural change occurred before accepting."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.540410500669278,
+      "ssim": 0.564385372182707
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "101085",
+    "group": "B",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 27.26500000001397,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_211734_cf62ecc15a",
+    "offline_verdict": {
+      "decision": "uncertain",
+      "quality_improved": true,
+      "structure_preserved": null,
+      "issues": [
+        "detected object count mismatch: original has 2 'person' detections, candidate has 1 'parking meter' detection; no matching objects between images"
+      ],
+      "reason": "The candidate image shows three carved wooden totem-like figures with improved clarity, sharpness, and lighting compared to the original. However, the object detection results indicate a severe mismatch: original detects two 'person' instances (likely misclassifications of the statues), while candidate detects one 'parking meter'—a category inconsistent with visual content. Since the detection system fails to align objects (matches: []), and we cannot verify whether structure (e.g., relative positions, proportions, features of the three statues) is preserved without reliable object correspondence, the assessment remains uncertain. Visual inspection suggests the three statues are present in both, but automated detection does not confirm this, and per instructions, uncertainty mandates rejection of acceptance.",
+      "retry_instruction": "Re-run object detection with a model trained on cultural artifacts/statues or manually verify object correspondence before re-evaluating. Ensure detection classes match actual content (e.g., 'statue' or 'sculpture', not 'person' or 'parking meter')."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.540410500669278,
+      "ssim": 0.564385372182707
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "101085",
+    "group": "C",
+    "status": "needs_review",
+    "accepted": false,
+    "images": 2,
+    "tools": 0,
+    "seconds": 66.40599999998813,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_211809_95ae555c78",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "The candidate image shows identical object positions, bounding boxes, centers, areas, and confidence scores for both persons (statues) as in the original. No additions, deletions, movement, or redraw is detected. Visual inspection confirms improved clarity and reduced noise/artifacts while preserving all structural elements and spatial relationships exactly.",
+      "retry_instruction": "No retry needed; the candidate is a clear quality improvement with perfect structural fidelity."
+    },
+    "metrics": {
+      "psnr": 20.540410500669278,
+      "ssim": 0.564385372182707
+    },
+    "input_metrics": {
+      "psnr": 20.540410500669278,
+      "ssim": 0.564385372182707
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "101085",
+    "group": "D",
+    "status": "completed",
+    "accepted": true,
+    "images": 1,
+    "tools": 0,
+    "seconds": 33.312000000005355,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_211918_69d7e444c8",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "The candidate image shows significantly improved clarity, detail, and contrast compared to the original. All three wooden sculptures are preserved in position, scale, and orientation with no additions, deletions, or movement. Texture details (e.g., wood grain, facial carving) are enhanced without distortion. The background elements (trees, gravel, foliage) remain consistent in layout and composition. Object detection mismatch in metadata appears to be due to failure of the detector on the original low-quality image; visual inspection confirms three statues present in both images.",
+      "retry_instruction": "No retry needed — the candidate is a clear quality improvement with full structural fidelity."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.540410500669278,
+      "ssim": 0.564385372182707
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "145086",
+    "group": "A",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 21.780999999988126,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_211957_26827a1498",
+    "offline_verdict": {
+      "decision": "reject",
+      "quality_improved": true,
+      "structure_preserved": false,
+      "issues": [
+        "新增人物（candidate中检测到person类对象，original中无）",
+        "风筝位置偏移超出阈值（distance=0.0250 > threshold=0.02）",
+        "背景人群与马匹细节增强可能源于重绘或 upscaling，非纯质量提升"
+      ],
+      "reason": "虽然 image 2 has higher resolution, better lighting, and reduced noise (quality improved), it introduces a new person object in the foreground right (class_id 0, confidence 0.587) not present in original, violating 'reject additions'. Additionally, the kite's center shifted vertically by ~0.025 in normalized coordinates, exceeding the allowed 0.02 threshold for object position stability. Structure is not preserved due to these changes.",
+      "retry_instruction": "Remove any added objects (e.g., the extra person on the right), ensure all original objects remain in identical positions and proportions, and only apply non-destructive enhancements (e.g., denoising, contrast adjustment without geometric change). Re-submit for review."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.673850146388858,
+      "ssim": 0.41080491473327413
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "145086",
+    "group": "B",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 25.85999999998603,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_212027_aaa36cb763",
+    "offline_verdict": {
+      "decision": "uncertain",
+      "quality_improved": true,
+      "structure_preserved": null,
+      "issues": [
+        "Original detection reports a 'kite' (class_id 33) in candidate but no matching object; candidate detection reports a 'person' (class_id 0) not present in original.",
+        "Object count mismatch: original has 1 detected object (kite), candidate has 1 detected object (person), but they are semantically different and occupy overlapping spatial regions.",
+        "The red-and-white striped barrier appears significantly extended/reconstructed in candidate image (more segments visible, sharper texture), suggesting possible redraw or inpainting rather than pure enhancement."
+      ],
+      "reason": "Detection indicates suspected count change: original identifies a kite near center-right, candidate identifies a person in similar location. Visually, the foreground figure holding the barrier is present in both, but the candidate image shows higher fidelity, more people in background, and clearer sky—yet the detector’s class mismatch raises uncertainty about whether content was altered (e.g., replacing or reinterpreting the kite as part of the barrier/person). Without ground-truth confirmation, we cannot verify if the 'kite' was misdetected originally or if the candidate introduced structural changes. Per instructions, uncertain detections must not be accepted.",
+      "retry_instruction": "Re-examine the images focusing on the object at [x≈0.75, y≈0.70] in original and [x≈0.75, y≈0.53] in candidate: determine if it is the same physical object (e.g., a flag/kite held by spectator) or a different entity. Confirm whether the red-and-white barrier’s length and continuity are preserved exactly or extended. If still ambiguous, request original source files or metadata."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.673850146388858,
+      "ssim": 0.41080491473327413
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "145086",
+    "group": "C",
+    "status": "needs_review",
+    "accepted": false,
+    "images": 2,
+    "tools": 0,
+    "seconds": 47.46899999998277,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_212102_a95b62685f",
+    "offline_verdict": {
+      "decision": "uncertain",
+      "quality_improved": null,
+      "structure_preserved": null,
+      "issues": [
+        "identical pixel content; no discernible improvement or degradation detected",
+        "no visible changes between original and candidate images"
+      ],
+      "reason": "The two images appear visually identical; the object detection metadata confirms exact match in bounding box, center, area, and confidence for the kite. Since no change is evident—neither quality improvement nor structural alteration—it is impossible to confirm an improvement per instructions. Per policy: when uncertain, do not accept.",
+      "retry_instruction": "Provide a candidate image that demonstrably improves quality (e.g., reduced noise, sharper details, better exposure) while preserving all original content exactly—no additions, deletions, movement, or redraws."
+    },
+    "metrics": {
+      "psnr": 20.673850146388858,
+      "ssim": 0.41080491473327413
+    },
+    "input_metrics": {
+      "psnr": 20.673850146388858,
+      "ssim": 0.41080491473327413
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "145086",
+    "group": "D",
+    "status": "needs_review",
+    "accepted": false,
+    "images": 2,
+    "tools": 1,
+    "seconds": 66.45300000000861,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_212154_7885870304",
+    "offline_verdict": {
+      "decision": "uncertain",
+      "quality_improved": null,
+      "structure_preserved": null,
+      "issues": [
+        "identical pixel content; no discernible improvement or degradation detected",
+        "no visible changes between original and candidate images"
+      ],
+      "reason": "The two images appear identical in visual content, including noise pattern, composition, object placement, and color. The detection metadata shows exact match (distance 0.0, same box, center, area, confidence), indicating no structural change. However, since the task requires assessing *quality improvement* and *preserved structure*, and there is no observable enhancement (e.g., reduced noise, sharper edges, better contrast), we cannot confirm 'quality improved'. Likewise, while structure is preserved (no movement/deletion/addition), the absence of any change makes it impossible to verify if the candidate is an intentional refinement or merely a copy. Per instruction: 'if uncertain do not accept'.",
+      "retry_instruction": "Provide a candidate image that exhibits measurable quality improvement (e.g., reduced compression artifacts, enhanced clarity, consistent lighting) while preserving all original objects, positions, and structure exactly. Do not submit identical or near-identical copies."
+    },
+    "metrics": {
+      "psnr": 20.673850146388858,
+      "ssim": 0.41080491473327413
+    },
+    "input_metrics": {
+      "psnr": 20.673850146388858,
+      "ssim": 0.41080491473327413
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "14037",
+    "group": "A",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 23.155999999988126,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_212306_4942d60145",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "The candidate image shows significant quality improvement: reduced noise, enhanced contrast, sharper detail in rock texture and cloud structure, improved color fidelity (vibrant blue sky, realistic cloud highlights), and better dynamic range revealing landscape features (forest, river, distant mountains) previously obscured in the original. The composition, object placement (person on peak, rock formation, river, mountain ranges), and spatial relationships are fully preserved with no additions, deletions, movement, or redrawn elements. The person’s pose (arms raised) is identical; rock geometry and perspective match. No side effects detected.",
+      "retry_instruction": "No retry needed — the enhancement is clean and faithful."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.852495184703763,
+      "ssim": 0.23412961552279166
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "14037",
+    "group": "B",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 23.921999999991385,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_212336_dfcd45bf10",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "The candidate image shows significantly improved clarity, contrast, color fidelity, and resolution compared to the original. The silhouette of the person on the rock peak, the rock texture, cloud formation, distant mountains, and river valley are all preserved in correct spatial arrangement with no additions, deletions, or movement. Noise and compression artifacts present in the original are eliminated. The aspect ratio error (0.0021) is negligible and does not affect structural integrity.",
+      "retry_instruction": "No retry needed; the enhancement is valid and faithful."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.852495184703763,
+      "ssim": 0.23412961552279166
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "14037",
+    "group": "C",
+    "status": "completed",
+    "accepted": true,
+    "images": 1,
+    "tools": 0,
+    "seconds": 32.703000000008615,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_212406_0c8f2cdeec",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "The candidate image shows significant quality improvement: reduced noise, enhanced contrast, sharper rock texture, more natural sky and cloud rendering, and better dynamic range in the landscape. The core composition is preserved: the person on the cliff apex remains in the same position with arms raised, the rock formation shape and foreground structure are unchanged, the river valley, distant snow-capped mountain, and surrounding ridges retain their relative positions and proportions. No additions, deletions, movement, or redrawn elements are detected; the improvement is purely in fidelity and clarity.",
+      "retry_instruction": "No retry needed — the enhancement is clean and faithful."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.852495184703763,
+      "ssim": 0.23412961552279166
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "14037",
+    "group": "D",
+    "status": "completed",
+    "accepted": true,
+    "images": 1,
+    "tools": 0,
+    "seconds": 29.687000000005355,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_212444_6f2e9b5109",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "The candidate image shows significantly improved clarity, dynamic range, and detail: the rock texture is sharper, the sky and clouds are more vivid and well-defined, the distant mountains and river are clearer, and noise/grain is reduced. The composition—including the silhouette of the person on the cliff, the rock formation’s shape and position, the river bend, forested slopes, and background mountain range—is preserved exactly with no additions, deletions, movement, or redrawn elements. The aspect ratio error (0.0021) is negligible and does not affect structural integrity.",
+      "retry_instruction": "No retry needed; improvement is clear and structure is fully preserved."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.852495184703763,
+      "ssim": 0.23412961552279166
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "216081",
+    "group": "A",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 23.171999999991385,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_212519_9fdd0df98d",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "Candidate image shows clear improvement: higher resolution, better lighting, reduced noise, sharper details (e.g., facial features, fabric texture, wagon wheel, 'IDAHO' text, and logo). Object positions, counts, and spatial relationships are preserved: two boys in same poses, same clothing, same props (rifles, belt, hat), same background structure and wagon. Bounding box analysis confirms matched persons with minimal positional drift (<1% of image width/height), well within acceptable tolerance for enhancement without structural change. No additions, deletions, or redraws detected.",
+      "retry_instruction": "No retry needed; enhancement is valid and faithful."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.849802999463222,
+      "ssim": 0.4575968482561625
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "216081",
+    "group": "B",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 26.23399999999674,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_212549_15750464bd",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "Candidate image shows clear improvement: higher resolution, better lighting, reduced noise, sharper details (e.g., facial features, fabric texture, wagon wheel, 'IDAHO' text, and emblem are more legible). Both persons are preserved in same positions, poses, clothing, and relative scale; no additions, deletions, or movement detected. Bounding box analysis confirms matched objects with minimal positional drift (<0.013 Euclidean distance) and consistent area ratios (ratio_error = 0.0021), well within acceptable tolerance. Structure—including shelter, background terrain, wagon, and signage—is fully preserved without distortion or side effects.",
+      "retry_instruction": "No retry needed; candidate is a clear quality enhancement with identical content and structure."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.849802999463222,
+      "ssim": 0.4575968482561625
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "216081",
+    "group": "C",
+    "status": "completed",
+    "accepted": true,
+    "images": 1,
+    "tools": 0,
+    "seconds": 33.437999999994645,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_212622_bc1d49999b",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "Candidate image shows clear improvement: higher resolution, better lighting, reduced noise, sharper details (e.g., facial features, fabric texture, wagon wheel, 'IDAHO' text, and emblem are more legible). Object positions, counts, and spatial relationships are preserved: two boys in same poses, same clothing, same props (rifles, holsters), same shelter structure, wagon, and background landscape. Bounding box analysis confirms matched persons with minimal positional drift (<0.012 normalized distance) and consistent area ratios (ratio_error = 0.0021 < 0.01 threshold). No additions, deletions, or redraws detected.",
+      "retry_instruction": "None — image passes all criteria for quality improvement and structural fidelity."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.849802999463222,
+      "ssim": 0.4575968482561625
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "216081",
+    "group": "D",
+    "status": "completed",
+    "accepted": true,
+    "images": 1,
+    "tools": 0,
+    "seconds": 36.530999999988126,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_212702_0d4e19300c",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "Candidate image shows clear improvement in sharpness, contrast, and color fidelity while preserving all original content: two boys with rifles, covered wagon with 'IDAHO' text and emblem, shelter structure, background landscape, and shadows. Bounding box analysis confirms matched persons with minimal positional drift (<2% center shift), no additions, deletions, or redraws. Ratio error is negligible (0.0021).",
+      "retry_instruction": "No retry needed; the enhancement is valid and faithful."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.849802999463222,
+      "ssim": 0.4575968482561625
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "241048",
+    "group": "A",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 19.703000000008615,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_212745_876289a95b",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "The candidate image shows significantly improved clarity, sharpness, color fidelity, and dynamic range compared to the original. The scene structure—including the stone bridge, river flow, surrounding fields, trees, and mountain backdrop—is fully preserved with no detectable additions, deletions, movement, or redrawn elements. Lighting and perspective remain consistent. The original’s heavy pixelation and noise are eliminated without altering composition or content.",
+      "retry_instruction": "No retry needed; improvement is clear and content is faithfully preserved."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.604937696013742,
+      "ssim": 0.5116814045940972
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "241048",
+    "group": "B",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 30.312999999994645,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_212810_ad990336ec",
+    "offline_verdict": {
+      "decision": "uncertain",
+      "quality_improved": null,
+      "structure_preserved": null,
+      "issues": [
+        "unreliable_or_truncated_detection",
+        "insufficient object-level verification"
+      ],
+      "reason": "Detection result indicates 'unreliable_or_truncated_detection' with empty original/candidate/matches arrays and ratio_error present but no concrete object comparisons. Without verified alignment of key elements (e.g., stone bridge, river path, tree positions, field boundaries, mountain contours), it is impossible to confirm whether additions, deletions, movement, or redraw occurred. Visual inspection suggests possible enhancement in clarity and color fidelity in candidate image, but structural fidelity cannot be confirmed without precise object matching. Per instruction: if uncertain, do not accept.",
+      "retry_instruction": "Re-run detection with full-resolution images and robust object segmentation (e.g., using SIFT/ORB keypoints or semantic segmentation) to explicitly verify all major elements: stone bridge (arches, abutments), river flow path, fence posts, tree clusters, hill contours, and field boundaries. Report exact coordinate matches and deviations before re-evaluation."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.604937696013742,
+      "ssim": 0.5116814045940972
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "241048",
+    "group": "C",
+    "status": "needs_review",
+    "accepted": false,
+    "images": 2,
+    "tools": 0,
+    "seconds": 62.96799999999348,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_212848_6c1c46c35a",
+    "offline_verdict": {
+      "decision": "uncertain",
+      "quality_improved": null,
+      "structure_preserved": null,
+      "issues": [
+        "unreliable_or_truncated_detection"
+      ],
+      "reason": "Detection output indicates unreliable or truncated detection (ratio_error: 0.0, empty original/candidate/matches lists). Visual comparison of the two images shows near-identical content with no obvious additions, deletions, or movement; however, due to the lack of reliable object-level analysis, structural fidelity and quality improvement cannot be confidently assessed. Without precise alignment and feature verification, acceptance is unjustified.",
+      "retry_instruction": "Re-run detection with higher-resolution input or enable full-object segmentation to confirm pixel-level correspondence and absence of artifacts."
+    },
+    "metrics": {
+      "psnr": 20.604937696013742,
+      "ssim": 0.5116814045940972
+    },
+    "input_metrics": {
+      "psnr": 20.604937696013742,
+      "ssim": 0.5116814045940972
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "241048",
+    "group": "D",
+    "status": "completed",
+    "accepted": true,
+    "images": 2,
+    "tools": 1,
+    "seconds": 80.68700000000536,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_212955_706398dd79",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "Candidate image shows clear improvement in sharpness, contrast, and color fidelity while preserving all structural elements: river flow, stone bridge, tree positions, fence lines, field boundaries, and mountain contours remain unchanged. No additions, deletions, or object movement detected. Noise and pixelation in original are reduced without altering content.",
+      "retry_instruction": "None needed — improvement is unambiguous and structure is fully preserved."
+    },
+    "metrics": {
+      "psnr": 28.638220370984364,
+      "ssim": 0.8722675587206536
+    },
+    "input_metrics": {
+      "psnr": 20.604937696013742,
+      "ssim": 0.5116814045940972
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "103070",
+    "group": "A",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 22.07799999997951,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_213118_6ea66b661b",
+    "offline_verdict": {
+      "decision": "reject",
+      "quality_improved": true,
+      "structure_preserved": false,
+      "issues": [
+        "Original objects (elephants) replaced with different objects (birds)",
+        "Content fundamentally altered: class_id changed from 20 (elephant) to 14 (bird)",
+        "No elephants present in candidate image; two birds introduced instead",
+        "Violates requirement to preserve original content and structure"
+      ],
+      "reason": "The candidate image replaces the two elephants in the original with two blue-footed boobies (birds). This constitutes a severe content substitution, not an enhancement. Although visual quality (sharpness, noise reduction, color fidelity) is improved, the core subject matter has been completely changed, violating the rule to reject additions, deletions, movement, redraw, or side effects. The detection output confirms unmatched_original [0,1] and unmatched_candidate [0,1], indicating no correspondence between objects.",
+      "retry_instruction": "Do not alter the subject matter. Preserve the original elephants exactly—same number, pose, position, and species. Only improve image quality (e.g., reduce noise, enhance clarity) without changing content."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.263997141468533,
+      "ssim": 0.33490806458967287
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "103070",
+    "group": "B",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 28.09399999998277,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_213149_565041fba5",
+    "offline_verdict": {
+      "decision": "reject",
+      "quality_improved": true,
+      "structure_preserved": false,
+      "issues": [
+        "Original objects (elephants) replaced with different objects (birds)",
+        "Content category changed: class_id 20 (elephant) → class_id 14 (bird)",
+        "No structural correspondence between original and candidate detections",
+        "Suspected complete scene substitution, not enhancement"
+      ],
+      "reason": "The candidate image shows two blue-footed boobies (birds), while the original detection identifies two elephants. This is a fundamental content replacement, not a quality improvement of the same scene. Although visual quality (sharpness, noise reduction, lighting) is clearly improved in the candidate, the requirement explicitly rejects additions, deletions, movement, redraw, or side effects—including object substitution. Since the detected objects are entirely different species with no spatial or semantic continuity, structure is not preserved. The 'uncertain' status from detection matching confirms mismatch; per instructions, when uncertain about object identity, do not accept.",
+      "retry_instruction": "Do not replace the original subjects. Preserve the elephants exactly as depicted in Image 1—only enhance resolution, reduce noise, or correct exposure without altering species, pose, position, or number of objects. Re-submit only if the same two elephants are present with improved fidelity."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.263997141468533,
+      "ssim": 0.33490806458967287
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "103070",
+    "group": "C",
+    "status": "needs_review",
+    "accepted": false,
+    "images": 2,
+    "tools": 0,
+    "seconds": 67.48399999999674,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_213226_c4ba22f7f5",
+    "offline_verdict": {
+      "decision": "uncertain",
+      "quality_improved": null,
+      "structure_preserved": null,
+      "issues": [
+        "identical pixel content detected; no visible improvement or degradation; cannot confirm enhancement without metadata or higher-resolution comparison"
+      ],
+      "reason": "The candidate image appears visually identical to the original (no discernible sharpening, denoising, contrast adjustment, or artifact reduction). The object detection metadata shows exact match in bounding boxes, centers, areas, and confidence — suggesting no structural change. However, without evidence of actual quality improvement (e.g., reduced noise, better edge definition), and given the instruction to accept *only* clear improvement, we cannot confirm enhancement. Since the images are indistinguishable, the decision must be uncertain.",
+      "retry_instruction": "Provide a candidate image with demonstrable quality improvement (e.g., reduced noise, enhanced detail, corrected exposure) while preserving all original objects and layout exactly; include side-by-side diff or metadata confirming enhancement."
+    },
+    "metrics": {
+      "psnr": 20.263997141468533,
+      "ssim": 0.33490806458967287
+    },
+    "input_metrics": {
+      "psnr": 20.263997141468533,
+      "ssim": 0.33490806458967287
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "103070",
+    "group": "D",
+    "status": "needs_review",
+    "accepted": false,
+    "images": 2,
+    "tools": 1,
+    "seconds": 88.54700000002049,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_213338_88ec366da5",
+    "offline_verdict": {
+      "decision": "uncertain",
+      "quality_improved": null,
+      "structure_preserved": null,
+      "issues": [
+        "identical pixel content; no visible improvement or degradation detected",
+        "no discernible difference between original and candidate images"
+      ],
+      "reason": "The two images appear visually identical—no change in resolution, noise, sharpness, color, or object placement is observable. The provided detection metadata shows exact match (distance 0.0) for both elephants, but since there is no actual visual difference, we cannot confirm a 'clear improvement' as required. Per instructions, uncertain cases must not be accepted.",
+      "retry_instruction": "Provide a candidate image that demonstrably improves quality (e.g., reduced noise, sharper details, better exposure) while preserving all original content without additions, deletions, or movement."
+    },
+    "metrics": {
+      "psnr": 20.263997141468533,
+      "ssim": 0.33490806458967287
+    },
+    "input_metrics": {
+      "psnr": 20.263997141468533,
+      "ssim": 0.33490806458967287
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "105025",
+    "group": "A",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 20.296999999991385,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_213511_6a55e8ad9f",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "Candidate image shows significantly improved clarity, sharpness, and color fidelity compared to the original. The animal (a bear, likely a young brown bear or similar species) remains in the same position on the rocks, with no additions, deletions, movement, or redrawn elements. Facial features, fur texture, rock details, and background are all preserved structurally while enhanced visually. Detection uncertainty in metadata is due to low-confidence automated classification, not visual inconsistency; manual inspection confirms content integrity and quality gain.",
+      "retry_instruction": "No retry needed — candidate is a clear improvement with preserved structure."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.87261094530146,
+      "ssim": 0.4853418094708411
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "105025",
+    "group": "B",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 25.5,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_213537_f4b00a5bc9",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "The candidate image shows significantly improved clarity, sharpness, and color fidelity compared to the original. The animal (a bear, likely a young brown bear or similar species) and surrounding rocks are rendered with accurate detail, texture, and lighting. No objects were added, deleted, moved, or redrawn; spatial relationships and composition are preserved exactly. The detection uncertainty in the metadata stems from low-confidence object detection, but visual inspection confirms the subject is consistently present and correctly represented in both images. The improvement is clear and structural integrity is maintained.",
+      "retry_instruction": "No retry needed; the enhancement is valid and faithful."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.87261094530146,
+      "ssim": 0.4853418094708411
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "105025",
+    "group": "C",
+    "status": "needs_review",
+    "accepted": false,
+    "images": 2,
+    "tools": 0,
+    "seconds": 64.10899999999674,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_213610_4ad71a9351",
+    "offline_verdict": {
+      "decision": "uncertain",
+      "quality_improved": null,
+      "structure_preserved": null,
+      "issues": [
+        "unreliable_or_truncated_detection"
+      ],
+      "reason": "The two images appear nearly identical with no discernible improvement in quality or structural change; however, the detection result indicates unreliable or truncated object detection, preventing confident assessment of content preservation or enhancement. Without reliable object-level comparison, we cannot verify absence of additions, deletions, movement, or redraw.",
+      "retry_instruction": "Re-run detection with higher-resolution inputs or explicit object segmentation masks to enable reliable pixel- and structure-level comparison."
+    },
+    "metrics": {
+      "psnr": 20.87261094530146,
+      "ssim": 0.4853418094708411
+    },
+    "input_metrics": {
+      "psnr": 20.87261094530146,
+      "ssim": 0.4853418094708411
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "105025",
+    "group": "D",
+    "status": "completed",
+    "accepted": true,
+    "images": 1,
+    "tools": 0,
+    "seconds": 31.812999999994645,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_213718_ade58e2936",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "The candidate image shows significantly improved clarity, sharpness, and color fidelity compared to the original. The lion’s fur texture, facial features (closed eyes, nose, whiskers), and surrounding rocks are rendered with greater detail and natural lighting. No objects have been added, deleted, moved, or redrawn; the composition, pose, and spatial relationships remain identical. The background blur and depth-of-field are consistent with the original intent. Detection uncertainty in metadata does not reflect visual evidence—visual inspection confirms faithful preservation and clear quality enhancement.",
+      "retry_instruction": "No retry needed; the candidate is a high-fidelity restoration of the original with measurable quality improvement and full structural fidelity."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.87261094530146,
+      "ssim": 0.4853418094708411
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "296059",
+    "group": "A",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 22.73499999998603,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_213756_693126a35b",
+    "offline_verdict": {
+      "decision": "reject",
+      "quality_improved": true,
+      "structure_preserved": false,
+      "issues": [
+        "Object position shift: original single elephant detection replaced by two elephants in candidate; center shifted from [0.482, 0.534] to [0.607, 0.557] (distance 0.127 > threshold 0.02)",
+        "Addition of second elephant instance not present in original",
+        "Bounding box area reduced significantly (0.848 → 0.563 for matched instance), indicating cropping or re-framing",
+        "Original image shows one cohesive elephant pair with overlapping bodies; candidate separates them into distinct individuals with altered spatial relationship"
+      ],
+      "reason": "The candidate introduces a second elephant instance and shifts the primary elephant’s position beyond allowable tolerance (distance 0.127 > 0.02). Although visual quality (sharpness, detail, noise reduction) is improved, the structural integrity—specifically object count and relative positioning—is violated per strict acceptance criteria. The original depicts two elephants closely interacting, but the detection treats them as one merged object; the candidate splits them into two detections, which constitutes an addition and structural change, not mere enhancement.",
+      "retry_instruction": "Preserve the exact number, positions, and spatial relationships of objects as in the original. Do not split or merge entities. Only improve resolution, lighting, or noise without altering composition. Re-run with strict adherence to object count and bounding box stability."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.28122653307671,
+      "ssim": 0.2886315222987929
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "296059",
+    "group": "B",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 27.937000000005355,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_213829_6a16888215",
+    "offline_verdict": {
+      "decision": "reject",
+      "quality_improved": true,
+      "structure_preserved": false,
+      "issues": [
+        "Object position shift: the left elephant is significantly shifted leftward and forward in candidate image (center x from 0.482 → 0.252), exceeding threshold (distance 0.0208 > 0.02)",
+        "Candidate detects two elephants with overlapping bounding boxes; original had only one detection, suggesting possible duplication or mis-segmentation",
+        "The right elephant’s position and pose appear altered relative to the left one—original shows near-symmetrical side-by-side stance; candidate shows left elephant more frontal and closer, disrupting spatial relationship"
+      ],
+      "reason": "Although visual quality (sharpness, detail, noise reduction) is clearly improved in candidate, the structural integrity is violated: the primary elephant’s location is displaced beyond acceptable tolerance, and the detection suggests an extra or mislocated instance. Per instructions, movement and redraw are not acceptable even if quality improves.",
+      "retry_instruction": "Preserve exact spatial arrangement and count of elephants; do not shift, crop, or reposition subjects. Only enhance resolution, reduce noise, and improve texture fidelity without altering geometry or composition."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.28122653307671,
+      "ssim": 0.2886315222987929
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "296059",
+    "group": "C",
+    "status": "needs_review",
+    "accepted": false,
+    "images": 2,
+    "tools": 0,
+    "seconds": 53.453000000008615,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_213906_296d733367",
+    "offline_verdict": {
+      "decision": "uncertain",
+      "quality_improved": null,
+      "structure_preserved": null,
+      "issues": [
+        "identical pixel content detected; no visible improvement or degradation; cannot confirm if candidate is enhanced or merely duplicated"
+      ],
+      "reason": "The provided detection metadata shows exact match in bounding box, center, area, and confidence for the elephant class, and visual inspection confirms the two images are pixel-identical (or near-identical with no discernible change). Since the task requires assessing *quality improvement* and *preserved structure*, but no change is evident, we cannot verify improvement. Per instructions: 'When detection is uncertain explicitly review objects; if uncertain do not accept.' No improvement is observable, and we lack evidence of enhancement (e.g., reduced noise, sharper detail, better exposure). Therefore, decision is uncertain.",
+      "retry_instruction": "Provide a candidate image that demonstrably improves quality (e.g., reduced noise, increased sharpness, better contrast) while preserving all original objects, positions, and structure—without additions, deletions, movement, or redraws."
+    },
+    "metrics": {
+      "psnr": 20.28122653307671,
+      "ssim": 0.2886315222987929
+    },
+    "input_metrics": {
+      "psnr": 20.28122653307671,
+      "ssim": 0.2886315222987929
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "296059",
+    "group": "D",
+    "status": "needs_review",
+    "accepted": false,
+    "images": 2,
+    "tools": 1,
+    "seconds": 64.25,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_214005_ca150bb5c3",
+    "offline_verdict": {
+      "decision": "uncertain",
+      "quality_improved": null,
+      "structure_preserved": null,
+      "issues": [
+        "identical pixel content; no discernible improvement or degradation detected",
+        "no visible changes between original and candidate images"
+      ],
+      "reason": "The two images appear visually identical—same noise pattern, lighting, composition, and elephant positioning. The object detection metadata confirms exact match in bounding box, center, area, and confidence. Since no quality improvement is evident (e.g., reduced noise, sharpening, color correction) and no structural change occurred, but the task requires *clear improvement* to accept, and we cannot confirm improvement without evidence, the decision must be uncertain per instructions: 'if uncertain do not accept'.",
+      "retry_instruction": "Provide a candidate image with demonstrable, non-trivial quality enhancement (e.g., reduced compression artifacts, improved contrast, sharper detail) while preserving all original content exactly—no additions, deletions, movement, or redraws."
+    },
+    "metrics": {
+      "psnr": 20.28122653307671,
+      "ssim": 0.2886315222987929
+    },
+    "input_metrics": {
+      "psnr": 20.28122653307671,
+      "ssim": 0.2886315222987929
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "119082",
+    "group": "A",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 19.437000000005355,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_214114_3387da35ef",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "Candidate image shows clear improvement: reduced noise, sharper details (e.g., violin wood grain, facial features, building textures), better contrast and color fidelity. Object positions and counts are preserved: one person (violinist mural), one foreground car (silver sedan), two background cars, three palm trees, multi-story parking garage on left, glass office tower on right. Bounding box shifts are minimal (<0.007 Euclidean distance) and consistent with higher resolution rendering—not structural change. No additions, deletions, or redraws detected. Detection confidence increased for both objects. Ratio error (0.0021) is negligible.",
+      "retry_instruction": "No retry needed; candidate is a high-fidelity enhancement of the original."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.6886464034077,
+      "ssim": 0.5351205785706027
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "119082",
+    "group": "B",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 27.625,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_214141_c5a9e8cdc8",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "The candidate image shows clear quality improvement: reduced noise/grain, sharper details (e.g., facial features, violin wood grain, building textures, palm fronds), and better contrast and color fidelity. Object positions, counts, and layout are preserved: one person (violinist) centered on wall, same car in foreground (slightly more visible but consistent with motion blur), same background buildings and palm trees. Bounding box analysis confirms minimal displacement (<0.006 Euclidean distance) and area change within acceptable tolerance; no additions, deletions, or redraws detected. Confidence scores increased for both objects, supporting improved detection reliability.",
+      "retry_instruction": "No retry needed; the enhancement is valid and faithful."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.6886464034077,
+      "ssim": 0.5351205785706027
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "119082",
+    "group": "C",
+    "status": "completed",
+    "accepted": true,
+    "images": 2,
+    "tools": 0,
+    "seconds": 59.078000000008615,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_214216_55d2493803",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "Candidate image shows clear quality improvement: reduced noise, sharper details (e.g., facial features, violin texture, building windows, palm fronds), and better color fidelity. Object positions, counts, and layout are preserved: person (centered, same pose, holding violin), car in foreground (same model, position, motion blur), background buildings and palm trees unchanged in count, placement, and relative geometry. Detection matches confirm identical objects with minimal bounding box shifts (<0.01 in normalized coordinates) consistent with resolution enhancement, not movement or redraw. No additions, deletions, or distortions detected.",
+      "retry_instruction": "No retry needed; the candidate is a high-fidelity enhancement of the original with strictly preserved content and structure."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.6886464034077,
+      "ssim": 0.5351205785706027
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "119082",
+    "group": "D",
+    "status": "completed",
+    "accepted": true,
+    "images": 2,
+    "tools": 1,
+    "seconds": 82.53100000001723,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_214323_10eb6f8120",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "Candidate image shows significantly reduced noise and grain, sharper details (e.g., facial features, violin texture, building windows, palm fronds), improved contrast and color fidelity, while preserving all original content: person with violin on billboard, multi-level parking structure left, modern office building right, three palm trees, foreground car, and background cars. Bounding box analysis confirms matched objects with minimal positional drift (<0.0035 in normalized coordinates) and no additions, deletions, or structural changes. Ratio error is negligible (0.0021).",
+      "retry_instruction": "No retry needed; candidate is a clear quality improvement with full structural preservation."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.6886464034077,
+      "ssim": 0.5351205785706027
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "16077",
+    "group": "A",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 20.296999999991385,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_214452_cbe7d5f449",
+    "offline_verdict": {
+      "decision": "uncertain",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [
+        "unreliable object detection: bear class ID 21 detected in candidate but not present in original; likely false positive due to texture/contrast artifacts"
+      ],
+      "reason": "Visual inspection confirms the scene shows three camels drinking water, with no bear present. The candidate image shows clear quality improvement (sharper detail, better lighting, reduced noise) and preserves the original structure (positions, proportions, and arrangement of camels unchanged). However, the automated detection reports a 'bear' (class_id 21) with moderate confidence (0.787), which is inconsistent with visual evidence. Given the instruction to reject additions—even if algorithmically detected—and the explicit uncertainty flag ('unreliable_or_truncated_detection'), we cannot confidently accept without verification. Since the detection is unreliable and contradicts visual reality, the decision must be uncertain per protocol.",
+      "retry_instruction": "Re-run object detection with stricter validation (e.g., require multiple independent models or manual confirmation) focusing on animal classification; ensure no false positives are accepted as content additions. If no bear is visually present, re-evaluate for acceptance."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.400556224013933,
+      "ssim": 0.439963332717789
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "16077",
+    "group": "B",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 28.515999999974156,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_214521_36d6f2fb98",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "The candidate image shows significantly improved clarity, sharpness, and contrast compared to the original. Details in fur texture, facial features, water ripples, and lighting are preserved and enhanced without any detectable additions, deletions, movement, or redraw of objects. The composition and spatial relationships among the camels remain identical. No extraneous detections (e.g., bear or elephant) are visible in the actual image; the provided detection metadata appears erroneous (likely from misapplied model on low-quality input) and does not reflect visual content—thus ignored per instruction to reject unreliable detections. Visual inspection confirms only camels present, consistent with original.",
+      "retry_instruction": "No retry needed; improvement is clear and structure fully preserved."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.400556224013933,
+      "ssim": 0.439963332717789
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "16077",
+    "group": "C",
+    "status": "completed",
+    "accepted": true,
+    "images": 2,
+    "tools": 0,
+    "seconds": 61.34399999998277,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_214555_57b4ef765c",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "Candidate image shows significantly improved clarity, detail, and lighting compared to the original: fur texture, eye details, water reflections, and muzzle features are sharply rendered without altering composition. No objects added, deleted, or moved; camel heads, legs, and water remain in identical spatial arrangement. Detection uncertainty in metadata stems from unreliable object classifier (mislabeling camels as bear/elephant), but visual inspection confirms only camels present and structure unchanged.",
+      "retry_instruction": "No retry needed; candidate is a clear quality improvement with preserved content and structure."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.400556224013933,
+      "ssim": 0.439963332717789
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "16077",
+    "group": "D",
+    "status": "completed",
+    "accepted": true,
+    "images": 2,
+    "tools": 0,
+    "seconds": 60.046999999991385,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_214702_c38d59d06a",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "Candidate image shows significantly improved clarity, reduced noise, better contrast, and enhanced texture detail (e.g., fur, water ripples, facial features) while preserving the exact composition: three camels drinking in a line, same head positions, leg placements, water level, and background. No objects added, deleted, moved, or redrawn. The detection metadata is unreliable (spurious bear/elephant detections likely due to artifact misclassification), but visual inspection confirms only camels are present and structure is intact.",
+      "retry_instruction": "No retry needed; the candidate is a clear quality improvement with preserved content."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.400556224013933,
+      "ssim": 0.439963332717789
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "143090",
+    "group": "A",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 22.094000000011874,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_214807_83635e2c4f",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "The candidate image shows significantly improved clarity, reduced noise, enhanced dynamic range, and better color fidelity compared to the original. The tufa formations, shoreline, reflection, sky gradients, and distant mountains are all preserved in correct spatial arrangement with no additions, deletions, or distortions. The improvement is clear and structural integrity is fully maintained.",
+      "retry_instruction": "No retry needed; the enhancement is valid and faithful."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.374532479716613,
+      "ssim": 0.22990910101485054
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "143090",
+    "group": "B",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 23.921999999991385,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_214834_6a3ac3dfce",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "The candidate image shows significantly improved clarity, reduced noise, enhanced detail in the tufa formations and shoreline texture, smoother water reflection, and more natural color gradation in the sky—without any detectable additions, deletions, movement, or redrawing of structures. The overall composition, shape, and spatial relationships of the island, reflections, and background mountains are preserved exactly. The ratio error is negligible (0.0021), and visual inspection confirms fidelity to the original structure.",
+      "retry_instruction": "No retry needed; candidate is a clear quality improvement with full structural preservation."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.374532479716613,
+      "ssim": 0.22990910101485054
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "143090",
+    "group": "C",
+    "status": "completed",
+    "accepted": true,
+    "images": 1,
+    "tools": 0,
+    "seconds": 30.71899999998277,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_214903_8b68e648f2",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "Candidate image shows significantly reduced noise and enhanced detail in the tufa formations, sky texture, and water reflection, while preserving all original elements: same rock structures, reflection symmetry, horizon line, mountain range in background, and cloud formation. No additions, deletions, movement, or redrawn elements are evident. The improved clarity and dynamic range constitute a clear quality improvement without structural alteration.",
+      "retry_instruction": "No retry needed; candidate is a valid enhancement of the original."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.374532479716613,
+      "ssim": 0.22990910101485054
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "143090",
+    "group": "D",
+    "status": "completed",
+    "accepted": true,
+    "images": 1,
+    "tools": 0,
+    "seconds": 27.78200000000652,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_214938_5a3c3d3c9f",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "Candidate image shows significantly reduced noise and enhanced detail in the tufa formations, sky gradients, and water reflection compared to the original. The composition, object positions, shapes, and spatial relationships (e.g., relative heights and spacing of tufa spires, shoreline contour, mountain silhouettes, reflection symmetry) are preserved without additions, deletions, or movement. Color balance remains consistent with natural twilight tones. No side effects or artifacts detected.",
+      "retry_instruction": "No retry needed; improvement is clear and content is fully preserved."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.374532479716613,
+      "ssim": 0.22990910101485054
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "196073",
+    "group": "A",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 23.437999999994645,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_215011_b543a46e73",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "The candidate image shows significantly improved clarity, reduced noise, and enhanced detail in the snake's scales, head, and rattle, as well as in the small insect and sand texture. The composition, positioning, and relative scale of all elements (snake, insect, shadows) are preserved without additions, deletions, or movement. Lighting and perspective remain consistent. No artifacts or redrawn elements detected.",
+      "retry_instruction": "No retry needed; improvement is clear and content is fully preserved."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.189887962002988,
+      "ssim": 0.3522185797659921
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "196073",
+    "group": "B",
+    "status": "baseline_completed",
+    "accepted": null,
+    "images": 1,
+    "tools": 0,
+    "seconds": 28.23399999999674,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_215040_05cbf84f70",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "The candidate image shows significantly improved clarity, reduced noise, and enhanced detail (e.g., scale texture, rattle structure, head features, and insect morphology) compared to the grainy, low-resolution original. The snake’s pose, coiling, position relative to the insect, and overall composition are preserved exactly—no additions, deletions, movement, or redraw detected. Lighting and shadows remain consistent with natural outdoor conditions. Object-level verification confirms the snake, its rattle, eye, forked tongue, and the nearby insect are structurally identical in placement and form between images.",
+      "retry_instruction": "None — decision is confident based on clear visual evidence of quality improvement without structural alteration."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.189887962002988,
+      "ssim": 0.3522185797659921
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "196073",
+    "group": "C",
+    "status": "completed",
+    "accepted": true,
+    "images": 1,
+    "tools": 0,
+    "seconds": 31.90600000001723,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_215114_be1137927a",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "The candidate image shows significantly improved clarity, reduced noise, and enhanced detail in the snake's scales, head, tongue, and the insect prey—without any detectable additions, deletions, movement, or redrawing. The composition, pose, relative positions, and shadowing of all elements are preserved exactly. Lighting and texture of the sand are consistent and more natural in the candidate. No structural changes observed.",
+      "retry_instruction": "No retry needed; improvement is clear and content is fully preserved."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.189887962002988,
+      "ssim": 0.3522185797659921
+    },
+    "human_review": "pending"
+  },
+  {
+    "scene": "196073",
+    "group": "D",
+    "status": "completed",
+    "accepted": true,
+    "images": 1,
+    "tools": 0,
+    "seconds": 34.171999999991385,
+    "directory": "F:\\Agentrestoration\\experiments\\runs\\20261112_215151_998bae8481",
+    "offline_verdict": {
+      "decision": "accept",
+      "quality_improved": true,
+      "structure_preserved": true,
+      "issues": [],
+      "reason": "The candidate image shows significantly improved clarity, reduced noise, and enhanced detail in the snake's scales, head, and rattle, as well as in the sand texture and the small insect/object to the right. The snake’s pose, curvature, position, and relative placement to the insect are preserved exactly. No additions, deletions, movement, or redrawn elements are detected. Lighting and shadows remain consistent with the original scene. The improvement is clear and faithful.",
+      "retry_instruction": "No retry needed; the enhancement is valid and preserves all original content and structure."
+    },
+    "metrics": {
+      "psnr": null,
+      "ssim": null,
+      "reason": "dimensions_differ"
+    },
+    "input_metrics": {
+      "psnr": 20.189887962002988,
+      "ssim": 0.3522185797659921
+    },
+    "human_review": "pending"
+  }
+]

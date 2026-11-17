@@ -1,0 +1,21 @@
+{
+  "vlm_base_url": "https://maas.qianwenaiapi.com/compatible-mode/v1",
+  "image_base_url": "https://maas.qianwenaiapi.com/compatible-mode/v1",
+  "vlm_model": "qwen3-vl-plus",
+  "image_model": "qwen-image-2.1-turbo",
+  "ratio_pass": 0.01,
+  "ratio_severe": 0.05,
+  "confidence": 0.5,
+  "min_area": 0.01,
+  "position_pass": 0.02,
+  "position_severe": 0.12,
+  "match_distance": 0.3,
+  "max_objects": 20,
+  "threshold_status": "pilot_calibrated_limited_brightness_controls",
+  "timeout": 180,
+  "max_bytes": 20971520,
+  "max_pixels": 40000000,
+  "tool_weights": "weights/gaussian_color_denoising_blind.pth",
+  "tool_arch": "third_party/Restormer/basicsr/models/archs/restormer_arch.py",
+  "device": "cpu"
+}

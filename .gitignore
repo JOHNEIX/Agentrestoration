@@ -5,6 +5,7 @@
 api.txt
 api.txt.*
 api.*.txt
+!api.example.txt
 
 # Python environments and generated files
 .venv/

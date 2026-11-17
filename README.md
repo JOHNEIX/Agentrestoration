@@ -6,6 +6,27 @@
 
 ## 运行
 
+首次安装（Windows，先安装 Python 3.12 64 位）：
+
+```powershell
+.\install.cmd
+```
+
+也可双击 `install.cmd`。脚本在项目目录创建 `.venv`，按锁文件安装依赖，下载 YOLO11n 与三种修复工具，检查配置，并在终端隐藏输入 API 密钥。两种 API 共用密钥时，第二次输入直接回车。已有的 `api.txt` 保留。准备完成后自动打开工作台。
+
+API 文件位于项目根目录，与 README 同级；格式见 [api.example.txt](api.example.txt)。也可先将示例复制为 `api.txt`，在“识别API”和“编辑API”各自下一行填写密钥。服务地址和模型名位于 `configs/default.json`，应与密钥对应的平台一致。安装检查不发送修复请求。
+
+常用安装选项：
+
+```powershell
+.\install.cmd -NoStart                                  # 安装完成后暂不启动
+.\install.cmd -CheckOnly -NonInteractive                 # 检查现有环境与模型资产
+.\install.cmd -PythonPath 'F:\Python312\python.exe'       # 指定 Python
+.\install.cmd -NonInteractive                            # 自动安装，API 通过文件或环境变量配置
+```
+
+重复安装会复用现有环境和校验通过的模型资产。下载中断后可重新执行；错误会显示在终端并停止安装。`-NonInteractive` 不提示输入或启动界面，首次会创建空白 `api.txt` 供填写。安装环境、缓存与权重均位于项目所在目录。
+
 在项目根目录打开 PowerShell：
 
 ```powershell

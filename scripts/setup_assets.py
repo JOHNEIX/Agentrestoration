@@ -3,18 +3,17 @@ import json
 import argparse
 import time
 import sys
-import urllib.request
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from agentrestoration.core import ROOT, digest, write_json
 
 def download(url,path):
     path.parent.mkdir(parents=True,exist_ok=True)
-    urllib.request.urlretrieve(url,path)
+    fetch(url, path)
     print(path.name, digest(path), flush=True)
 
 def restormer():
-    sha=json.load(urllib.request.urlopen("https://api.github.com/repos/swz30/Restormer/commits/main"))["sha"]
+    sha="68dc6ac472db26f16361150cb7a96a1bc87da93f"
     root=ROOT / "third_party/Restormer"
     download(f"https://raw.githubusercontent.com/swz30/Restormer/{sha}/basicsr/models/archs/restormer_arch.py",root / "basicsr/models/archs/restormer_arch.py")
     download(f"https://raw.githubusercontent.com/swz30/Restormer/{sha}/LICENSE.md",root / "LICENSE.md")
@@ -79,7 +78,13 @@ def image_tool(name):
     fetch(f"{raw}/{source['license']}", root / "LICENSE")
     weights = ROOT / "weights" / source["weights"]
     weights.parent.mkdir(parents=True, exist_ok=True)
-    if not weights.exists():
+    reusable_weights = False
+    try:
+        previous = json.loads((root / "source.json").read_text(encoding="utf-8"))
+        reusable_weights = digest(weights) == previous["weights_sha256"]
+    except (OSError, ValueError, KeyError):
+        pass
+    if not reusable_weights:
         fetch(source["url"], weights)
     write_json(root / "source.json", dict(repository=source["repository"], reference=source["commit"],
         commit=source["commit"] if len(source["commit"]) == 40 else "unknown",
@@ -90,15 +95,44 @@ def image_tool(name):
     print(name, weights.stat().st_size, digest(weights), flush=True)
 
 
+def assets_ready(name):
+    """Reuse complete local assets, checking hashes when source metadata supplies them."""
+    try:
+        if name == "restormer":
+            root = ROOT / "third_party/Restormer"
+            paths = [root / "basicsr/models/archs/restormer_arch.py", root / "LICENSE.md",
+                     root / "source.json", ROOT / "weights/yolo11n.pt"]
+            metadata = json.loads((ROOT / "weights/sources.json").read_text(encoding="utf-8"))
+            weights = ROOT / "weights/gaussian_color_denoising_blind.pth"
+            return all(p.is_file() and p.stat().st_size for p in paths) and digest(weights) == metadata["sha256"]
+        source = SOURCES[name]
+        root = ROOT / "third_party" / source["directory"]
+        metadata = json.loads((root / "source.json").read_text(encoding="utf-8"))
+        return ((root / "LICENSE").is_file()
+                and digest(root / source["local"]) == metadata["architecture_sha256"]
+                and digest(ROOT / "weights" / source["weights"]) == metadata["weights_sha256"])
+    except (OSError, ValueError, KeyError):
+        return False
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--tool", choices=["all", "restormer", *SOURCES], default="all")
+    parser.add_argument("--check", action="store_true", help="Check local assets without downloading")
     args = parser.parse_args()
-    if args.tool in ("all", "restormer"):
-        restormer()
-    for name in SOURCES:
+    for name in ["restormer", *SOURCES]:
         if args.tool in ("all", name):
-            image_tool(name)
+            if assets_ready(name):
+                print(name, "local assets OK", flush=True)
+            elif args.check:
+                raise SystemExit(name + ": missing or inconsistent assets; run scripts/setup_assets.py")
+            else:
+                if name == "restormer":
+                    restormer()
+                else:
+                    image_tool(name)
+                if not assets_ready(name):
+                    raise SystemExit(name + ": asset check failed")
 
 
 if __name__ == "__main__": main()

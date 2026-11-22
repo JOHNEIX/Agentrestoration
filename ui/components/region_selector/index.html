@@ -4,11 +4,12 @@
 body{margin:0;font:13px system-ui;color:#53647b}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
 button{padding:5px 10px;background:white;border:1px solid #cbd5e1;border-radius:6px;color:#334155;cursor:pointer}
-canvas{display:block;width:100%;height:auto;border-radius:9px;touch-action:none;cursor:crosshair}
+.canvas-stage{height:380px;display:grid;place-items:center;background:#f7f9fc;border-radius:10px}
+canvas{display:block;width:auto;height:auto;max-width:100%;max-height:380px;border-radius:9px;touch-action:none;cursor:crosshair}
 #status{margin:8px 0;min-height:20px}
 </style></head><body>
-<div class="bar"><span>在原图上拖拽框选修复区域</span><button id="clear" type="button">清除选区</button></div>
-<canvas id="canvas" aria-label="框选修复区域"></canvas>
+<div class="canvas-stage"><canvas id="canvas" aria-label="框选修复区域"></canvas></div>
+<div class="bar"><span>框住所需要修改的部分</span><button id="clear" type="button">清除选区</button></div>
 <div id="status" role="status">请框选一个矩形区域</div>
 <script>
 const canvas=document.getElementById("canvas"),ctx=canvas.getContext("2d");

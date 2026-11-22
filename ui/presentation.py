@@ -17,36 +17,88 @@ def candidate_label(candidate):
     return f"{name} · {status}"
 
 
+def stage_badge_html(snapshot):
+    running = next((node for node in snapshot.get("steps", []) if node["status"] == "running"), None)
+    status = snapshot.get("status")
+    if status == "completed":
+        color, text = "success", "处理完成 · 结果已接受"
+    elif status in ("needs_review", "execution_failed"):
+        color = "failed"
+        text = "处理结束 · 需人工检查" if status == "needs_review" else "处理执行失败"
+    else:
+        color = "running" if running or status in ("preparing", "processing") else "pending"
+        text = running["title"] if running else snapshot.get("current_stage", "等待选择图片")
+    return (f'<div class="flow-status-wrap"><div class="flow-status {color}" role="status" aria-live="polite">'
+            f'<span class="status-dot" aria-hidden="true"></span><span class="status-text">{escape(text)}</span>'
+            '</div></div>')
+
+
 def flow_html(snapshot):
-    steps = snapshot.get("steps") or [dict(id="prepare", title="图片准备", status="pending"),
-                                      dict(id="analysis", title="退化分析", status="pending"),
-                                      dict(id="image_1:generate", title="首次编辑", status="pending")]
+    steps = snapshot.get("steps") or [
+        dict(id="prepare", title="图片准备", status="pending"),
+        dict(id="analysis", title="退化分析", status="pending"),
+        dict(id="image_1:generate", title="首次编辑", status="pending", attempt=1),
+        dict(id="image_1:structure", title="结构检查", status="pending", attempt=1),
+        dict(id="image_1:quality", title="效果验证", status="pending", attempt=1),
+        dict(id="result", title="最终结果", status="pending")]
+    # Preparation leads into the first attempt; the result closes the last one.
+    groups, preparation = [], []
+    for node in steps:
+        attempt = node.get("attempt")
+        if attempt is not None:
+            if not groups or groups[-1][0] != attempt:
+                groups.append((attempt, preparation + [node]))
+                preparation = []
+            else:
+                groups[-1][1].append(node)
+        elif groups:
+            groups[-1][1].append(node)
+        else:
+            preparation.append(node)
+    if preparation:
+        groups.append((None, preparation))
     html = ["""<style>
-    .flow{font:14px system-ui;color:#25334a;padding:4px 2px;max-height:740px;overflow:auto}
-    .flow-node{border:1px solid #dce2eb;border-left:4px solid #c2cad7;border-radius:11px;padding:12px 14px;background:#f6f8fb}
+    .flow{font:13px system-ui;color:#25334a;max-height:340px;overflow-y:auto;padding:0 2px}
+    .flow-group+.flow-group{border-top:1px solid #e1e7ef;margin-top:10px;padding-top:10px}
+    .flow-attempt{font-size:12px;font-weight:600;color:#64748b;margin-bottom:8px}
+    .flow-scroll{overflow-x:auto;padding:0 1px 5px}
+    .flow-track{display:flex;align-items:stretch;min-width:min-content}
+    .flow-node{box-sizing:border-box;flex:1 0 108px;min-width:108px;border:1px solid #dce2eb;border-top:3px solid #c2cad7;border-radius:10px;padding:10px;background:#f6f8fb}
     .flow-node.running{background:#eaf2ff;border-color:#3984ef;color:#175bb5}
     .flow-node.success{background:#edf8f1;border-color:#3ba46b;color:#216942}
     .flow-node.failed{background:#fff0ef;border-color:#dd6a65;color:#a52c2c}
-    .flow-node small{display:block;font-size:12px;line-height:1.5;margin-top:5px;overflow-wrap:anywhere;color:inherit;opacity:.85}
-    .flow-arrow{text-align:center;color:#a6b2c3;height:22px;line-height:22px}
-    .flow-attempt{font-size:12px;color:#607086;margin:16px 0 8px}
-    </style><div class="flow">"""]
-    previous_attempt = None
+    .flow-node summary{list-style:none;cursor:pointer}
+    .flow-node summary::-webkit-details-marker{display:none}
+    .flow-node summary:focus-visible{outline:2px solid #2878e3;outline-offset:4px}
+    .flow-node small{display:block;font-size:11px;line-height:1.6;margin-top:5px;color:inherit;opacity:.85}
+    .flow-node p{font-size:12px;line-height:1.6;margin:8px 0 0;overflow-wrap:anywhere;max-width:260px}
+    .flow-disclosure{float:right;opacity:.65;margin-left:4px}
+    .flow-arrow{display:flex;flex:0 0 22px;align-items:center;justify-content:center;color:#94a3b8}
+    </style><div class="flow" aria-label="本轮处理流程">"""]
     status_labels = dict(running="进行中", success="成功", failed="未通过", pending="等待", skipped="已跳过")
     icons = dict(running="●", success="✓", failed="×", pending="○", skipped="—")
-    for index, node in enumerate(steps):
-        if index:
-            html.append('<div class="flow-arrow">↓</div>')
-        attempt = node.get("attempt")
-        if attempt and attempt != previous_attempt:
-            html.append(f'<div class="flow-attempt">第 {int(attempt)} 次尝试</div>')
-            previous_attempt = attempt
-        status = node["status"] if node["status"] in status_labels else "pending"
-        label = "需复核" if node.get("needs_review") else status_labels[status]
-        reason = REASONS.get(node.get("reason"), node.get("reason", ""))
-        html.append(f'<div class="flow-node {status}" data-node="{escape(node["id"], quote=True)}" data-state="{status}">'
-                    f'{icons[status]} {escape(node["title"])} · {label}'
-                    + (f'<small>{escape(str(reason))}</small>' if reason else "") + '</div>')
+    for attempt, nodes in groups:
+        heading = f"第 {int(attempt)} 次尝试" if attempt is not None else "本轮处理"
+        generation = next((n["title"] for n in nodes if n["id"].endswith(":generate")), None)
+        if generation:
+            heading += " · " + generation
+        html.append(f'<section class="flow-group" data-attempt="{attempt if attempt is not None else "prepare"}">'
+                    f'<div class="flow-attempt">{escape(heading)}</div><div class="flow-scroll"><div class="flow-track">')
+        for index, node in enumerate(nodes):
+            if index:
+                html.append('<div class="flow-arrow" aria-hidden="true">→</div>')
+            status = node["status"] if node["status"] in status_labels else "pending"
+            label = "需复核" if node.get("needs_review") else status_labels[status]
+            reason = REASONS.get(node.get("reason"), node.get("reason", ""))
+            attributes = (f'class="flow-node {status}" data-node="{escape(node["id"], quote=True)}" '
+                          f'data-state="{status}"')
+            content = f'{escape(node["title"])}<small>{icons[status]} {label}</small>'
+            if reason:
+                html.append(f'<details {attributes}><summary><span class="flow-disclosure">⌄</span>{content}</summary>'
+                            f'<p>{escape(str(reason))}</p></details>')
+            else:
+                html.append(f'<div {attributes}>{content}</div>')
+        html.append('</div></div></section>')
     html.append('</div>')
     return "".join(html)
 

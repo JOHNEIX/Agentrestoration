@@ -1,4 +1,4 @@
-"""Three-column workbench and user-controlled round history."""
+"""Image workspace with settings on the left and a process panel below."""
 from pathlib import Path
 import uuid
 
@@ -7,11 +7,11 @@ import streamlit as st
 from agentrestoration.core import ROOT, Settings
 from agentrestoration.region import RepairRegion
 from ui import region_selector, service
-from ui.presentation import candidate_label, flow_html, preview_image, prompt_text, REASONS
+from ui.presentation import candidate_label, flow_html, stage_badge_html, preview_image, prompt_text, REASONS
 from ui.rounds import available_choices, chosen_option, input_path
 
 
-DEFAULT_REQUIREMENT = "改善质量并尽量保留原始内容、构图和物体位置。"
+DEFAULT_REQUIREMENT = " "
 
 
 def main():
@@ -62,7 +62,10 @@ def main():
         st.success("工作台正在退出，可以关闭此页面。再次使用请运行 run_ui.ps1。")
         st.stop()
     st.html('<div class="intro">选择图片，描述修复目标，查看每一步处理，也可以选择结果继续修改。</div>')
-    left, middle, right = st.columns([1.05, 2.4, 1.3], gap="medium", border=True)
+    settings_column, workspace = st.columns([1, 3.55], gap="large")
+    left = settings_column.container(border=True, key="settings_panel")
+    middle = workspace.container(border=True, key="image_panel")
+    right = workspace.container(border=True, key="flow_panel")
 
     with left:
         st.subheader("01  修复设置")
@@ -108,8 +111,12 @@ def main():
         st.subheader("02  图片对比")
         image_slot, detail_slot, selection_slot, download_slot = [st.empty() for _ in range(4)]
     with right:
-        st.subheader("03  处理流程")
-        current_slot, graph_slot = st.empty(), st.empty()
+        flow_heading, flow_status = st.columns([1, 2], vertical_alignment="center")
+        with flow_heading:
+            st.subheader("03  处理流程")
+        with flow_status:
+            current_slot = st.empty()
+        graph_slot = st.empty()
 
     def region_picker(image, image_id):
         value = region_selector.select_region(preview_image(image), image_id, state.repair_region)
@@ -126,14 +133,7 @@ def main():
             a, b = st.columns(2)
             a.metric("编辑调用", f"{value.get('image_requests_sent', 0)} / 2")
             b.metric("工具流程", f"{value.get('tool_pipeline_started', 0)} / 1")
-        running = next((n for n in value.get("steps", []) if n["status"] == "running"), None)
-        title = running["title"] if running else value.get("current_stage", "等待选择图片")
-        if value.get("status") == "completed":
-            current_slot.success("处理完成 · 结果已接受")
-        elif value.get("status") in ("needs_review", "execution_failed"):
-            current_slot.error("处理结束 · 需人工检查" if value["status"] == "needs_review" else "处理执行失败")
-        else:
-            current_slot.info(title)
+        current_slot.html(stage_badge_html(value))
         graph_slot.html(flow_html(value))
         candidate = chosen_option(value, None if state.running else
                                   state.selections.get(value.get("directory")))
@@ -157,32 +157,33 @@ def main():
                     except (ValueError, OSError):
                         st.error("图片无法读取，请选择有效图片。")
                 else:
-                    st.info("选择图片后在这里预览")
+                    st.html('<div class="image-empty"><span>＋</span>选择图片后在这里预览</div>')
             with candidate_col:
                 st.caption(candidate.get("label", "修复候选") if candidate else "修复候选")
                 if candidate:
                     if local_mode and not state.running:
-                        st.caption("框选下一轮修改区域")
                         region_picker(candidate["absolute_path"],
                                       f"{value.get('directory')}:{candidate['id']}:{state.region_revision}")
                     else:
                         st.image(preview_image(candidate["absolute_path"],
                                                checks.get("candidate", []) if show_boxes else []), width="stretch")
                 else:
-                    st.info("开始处理后展示修复候选")
+                    st.html('<div class="image-empty"><span>✦</span>开始处理后展示修复候选</div>')
         with detail_slot.container():
             if candidate:
                 st.markdown(f"**{candidate_label(candidate)}**")
                 reason = (candidate.get("verdict", {}).get("reason") or candidate.get("reason")
                           or candidate.get("error", ""))
-                if reason:
-                    st.caption(REASONS.get(reason, reason))
-                if candidate["id"] != "original":
-                    with st.expander("实际修复指令"):
+                with st.expander("结果详情与实际修复指令", expanded=False):
+                    if reason:
+                        st.caption(REASONS.get(reason, reason))
+                    if candidate["id"] != "original":
                         st.text(prompt_text(value["directory"], candidate, value))
+                    if value.get("record_file"):
+                        st.caption("任务日志：" + str(Path(value["record_file"]).parent))
             if value.get("error"):
                 st.error("处理执行失败：" + value["error"])
-            if value.get("record_file"):
+            if value.get("record_file") and not candidate:
                 st.caption("任务日志：" + str(Path(value["record_file"]).parent))
             if len(state.rounds) > 1:
                 initial = input_path(state.rounds[0])
@@ -197,14 +198,16 @@ def main():
         if others:
             with selection_slot.container():
                 with st.expander(f"其他候选（{len(others)}）", expanded=False):
-                    for candidate in others:
-                        st.image(preview_image(candidate["absolute_path"]), width="stretch")
-                        st.caption(candidate_label(candidate))
-                        reason = candidate.get("verdict", {}).get("reason") or candidate.get("reason", "")
-                        if reason:
-                            st.caption(REASONS.get(reason, reason))
-                        st.button("选择此图", key=f"choose:{snapshot['directory']}:{candidate['id']}",
-                                  on_click=select_candidate, args=(candidate["id"],))
+                    columns = st.columns(min(3, len(others)))
+                    for index, candidate in enumerate(others):
+                        with columns[index % len(columns)]:
+                            st.image(preview_image(candidate["absolute_path"]), width="stretch")
+                            st.caption(candidate_label(candidate))
+                            reason = candidate.get("verdict", {}).get("reason") or candidate.get("reason", "")
+                            if reason:
+                                st.caption(REASONS.get(reason, reason))
+                            st.button("选择此图", key=f"choose:{snapshot['directory']}:{candidate['id']}",
+                                      on_click=select_candidate, args=(candidate["id"],))
         if snapshot.get("status") in ("completed", "needs_review", "execution_failed"):
             with download_slot.container():
                 a, b = st.columns(2)

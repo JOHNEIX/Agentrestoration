@@ -13,6 +13,34 @@ def test_flow_status_and_escaping():
     assert "<script>" not in html and "&lt;script&gt;" in html
 
 
+def test_horizontal_flow_groups_preserve_attempts_and_result_order():
+    from xml.etree import ElementTree
+    steps = [
+        dict(id="prepare", title="图片准备", status="success"),
+        dict(id="analysis", title="退化分析", status="success"),
+        dict(id="image_1:generate", title="首次编辑", status="success", attempt=1),
+        dict(id="image_1:structure", title="结构检查", status="failed", attempt=1, reason="object_position"),
+        dict(id="image_1:quality", title="效果验证", status="skipped", attempt=1),
+        dict(id="route_1", title="路线选择", status="success", attempt=1),
+        dict(id="tool_1:generate", title="工具回退", status="success", attempt=2),
+        dict(id="tool_1:structure", title="结构检查", status="success", attempt=2),
+        dict(id="tool_1:quality", title="效果验证", status="failed", attempt=2,
+             needs_review=True, reason="无法确认 <background>"),
+        dict(id="result", title="最终结果", status="failed")]
+    root = ElementTree.fromstring("<root>" + flow_html(dict(steps=steps)) + "</root>")
+    groups = root.findall(".//section")
+    assert [g.attrib["data-attempt"] for g in groups] == ["1", "2"]
+    node_ids = [[n.attrib["data-node"] for n in g.iter() if "data-node" in n.attrib] for g in groups]
+    assert node_ids == [[s["id"] for s in steps[:6]], [s["id"] for s in steps[6:]]]
+    nodes = {n.attrib["data-node"]: n for n in root.iter() if "data-node" in n.attrib}
+    assert nodes["image_1:structure"].attrib["data-state"] == "failed"
+    assert nodes["image_1:quality"].attrib["data-state"] == "skipped"
+    assert nodes["tool_1:generate"].attrib["data-state"] == "success"
+    assert nodes["tool_1:quality"].find("summary") is not None
+    assert nodes["tool_1:quality"].find("p").text == "无法确认 <background>"
+    assert "需复核" in "".join(nodes["tool_1:quality"].itertext())
+
+
 def test_box_preview_preserves_artifact(tmp_path):
     from PIL import Image
     p=tmp_path/"original.png";Image.new("RGB",(100,100),"white").save(p)
@@ -33,6 +61,11 @@ def test_app_initial_layout():
     assert not app.button(key="shutdown_workbench").disabled
     assert len(app.text_area)==1
     assert app.selectbox[0].options == ["自动处理", "合成高斯去噪", "低光增强", "去雾"]
+    settings = next(c for c in app.get("column") if [h.value for h in c.subheader] == ["01  修复设置"])
+    workspace = next(c for c in app.get("column")
+                     if [h.value for h in c.subheader] == ["02  图片对比", "03  处理流程"])
+    assert abs(settings.proto.weight - .22) < .01
+    assert abs(workspace.proto.weight - .78) < .01
 
 
 def test_app_result_selection_does_not_rerun_job(tmp_path,monkeypatch):

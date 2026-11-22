@@ -2,11 +2,12 @@ import shutil
 import time
 
 from .adapters import APIError
-from .core import ROOT, Job, choose_route, error_details, prepare, structure, write_json
+from .core import ROOT, Job, choose_route, error_details, prepare, structure, write_json, appearance_evidence, resolve_verdict
+from .region import prepare_region, compose_region, region_instruction
 
 
 def run(path, requirement, settings, api, detector, tool, output="runs", on_event=None,
-        *, log_root=ROOT / "log/tasks", job=None):
+        *, log_root=ROOT / "log/tasks", job=None, region=None):
     if job is None:
         job = Job(output, settings, on_event=on_event, log_root=log_root)
     job.data.update(requirement=requirement, provenance=getattr(api, "provenance", "real"), status="processing")
@@ -24,13 +25,16 @@ def run(path, requirement, settings, api, detector, tool, output="runs", on_even
     try:
         begin("prepare", "图片准备")
         original = prepare(path, job, settings)
+        local = prepare_region(original, region, job) if region is not None else None
+        restoration_input = job.path / local["input"] if local else original
         end()
         begin("analysis", "退化分析")
-        analysis = api.analyze(original, requirement, job)
+        analysis = api.analyze(restoration_input, requirement + (region_instruction(local) if local else ""), job)
         job.data["analysis"] = analysis.model_dump()
         write_json(job.path / "analysis.json", analysis.model_dump())
         end()
-        prompt, route = analysis.edit_prompt, "image"
+        base_prompt = analysis.edit_prompt + (region_instruction(local) if local else "")
+        prompt, route = base_prompt, "image"
         attempt = 0
         while route != "stop":
             attempt += 1
@@ -51,18 +55,33 @@ def run(path, requirement, settings, api, detector, tool, output="runs", on_even
             try:
                 begin(f"{candidate_id}:generate", label, attempt=attempt, source=route)
                 if route == "image":
-                    candidate = api.edit(original, prompt, job)
+                    candidate = api.edit(restoration_input, prompt, job)
                 else:
                     job.reserve("tool")
-                    candidate = tool.run(original, job)
-                candidate_record["path"] = candidate.name
+                    candidate = tool.run(restoration_input, job)
+                candidate_record["raw_path"] = candidate.name
+                if not local:
+                    candidate_record["path"] = candidate.name
                 end(candidate_path=candidate.name)
-                job.event("candidate_ready", candidate_id=candidate_id, path=candidate.name, attempt=attempt)
+                if not local:
+                    job.event("candidate_ready", candidate_id=candidate_id, path=candidate.name, attempt=attempt)
 
                 begin(f"{candidate_id}:structure", "结构检查", attempt=attempt)
                 baseline_uncertain = any(d.uncertain or (d.type in ("blur", "low_light") and d.severity in ("moderate", "severe", "uncertain"))
                                          for d in analysis.degradations)
-                checks = structure(original, candidate, detector, settings, baseline_uncertain)
+                if local:
+                    crop_checks = structure(restoration_input, candidate, detector, settings, baseline_uncertain)
+                    candidate_record["crop_checks"] = crop_checks
+                    if crop_checks["status"] == "fail":
+                        checks = dict(crop_checks, scope="region_input")
+                    else:
+                        candidate, composition = compose_region(original, candidate, local, job, candidate_id)
+                        candidate_record.update(composition)
+                        job.event("candidate_ready", candidate_id=candidate_id, path=candidate.name, attempt=attempt)
+                        checks = structure(original, candidate, detector, settings, baseline_uncertain)
+                    checks["local_repair"] = local
+                else:
+                    checks = structure(original, candidate, detector, settings, baseline_uncertain)
                 candidate_record["checks"] = checks
                 end("success" if checks["status"] == "pass" else "failed",
                     reason=checks["reason"], needs_review=checks["status"] == "uncertain")
@@ -73,7 +92,15 @@ def run(path, requirement, settings, api, detector, tool, output="runs", on_even
                     job.step(f"{candidate_id}:quality", "效果验证", "skipped", attempt=attempt, reason="结构异常，转入路线选择")
                 else:
                     begin(f"{candidate_id}:quality", "效果验证", attempt=attempt)
-                    verdict = api.compare(original, candidate, checks, job)
+                    evidence = appearance_evidence(original,candidate,local["box"] if local else None)
+                    checks["appearance"] = evidence
+                    job.event("appearance_evidence", candidate_id=candidate_id, **evidence)
+                    proposed = api.compare(original, candidate, checks, job)
+                    candidate_record["vlm_verdict"] = proposed.model_dump()
+                    verdict = resolve_verdict(proposed,evidence)
+                    if verdict != proposed:
+                        job.event("verdict_resolved",candidate_id=candidate_id,
+                                  proposed=proposed.decision,effective=verdict.decision,reason=verdict.reason)
                     candidate_record["verdict"] = verdict.model_dump()
                     candidate_record["status"] = "accepted" if verdict.accepted() else "rejected"
                     end("success" if verdict.accepted() else "failed", reason=verdict.reason,
@@ -83,8 +110,9 @@ def run(path, requirement, settings, api, detector, tool, output="runs", on_even
                         job.data.update(status="completed", accepted=True, output="final.png")
                         break
                     feedback = verdict.reason + " " + verdict.retry_instruction
-                    severe = verdict.structure_preserved is False and verdict.structure_issue == "count_change"
-                prompt = analysis.edit_prompt + "\nCorrect previous failure: " + feedback + "\nAlways preserve original content and composition."
+                    severe = ((verdict.structure_preserved is False and verdict.structure_issue == "count_change")
+                              or (verdict.appearance_change == "unexpected" and evidence["status"] == "suspect"))
+                prompt = base_prompt + "\nCorrect previous failure: " + feedback + "\nAlways preserve original content and composition."
             except Exception as error:
                 details = error_details(error)
                 message = str(error) if isinstance(error, APIError) else details["message"]

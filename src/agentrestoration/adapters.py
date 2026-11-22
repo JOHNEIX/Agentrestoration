@@ -7,7 +7,7 @@ from io import BytesIO
 from pathlib import Path
 
 import httpx
-from PIL import Image
+from PIL import Image, ImageDraw
 
 from .core import Analysis, ROOT, Verdict, digest
 
@@ -109,9 +109,62 @@ class Qwen:
         return self.vlm([original], "Analyze degradations conservatively. Generate restoration prompt preserving all content and composition. User: " + requirement, Analysis, job)
 
     def compare(self, original, candidate, checks, job):
-        return self.vlm([original, candidate], "Image 1 is original; image 2 is candidate. Compare quality improvement and preserved content. "
-            "Reject additions, deletions, movement, redraw or side effects. Accept only clear improvement and preserved structure. "
-            "When detection is uncertain explicitly review objects; if uncertain do not accept. Checks: " + json.dumps(checks), Verdict, job)
+        paths = [original, candidate]
+        focus = ""
+        evidence = checks.get("appearance", {})
+        if checks.get("local_repair") or evidence.get("regions"):
+            folder = job.path / "validation"
+            folder.mkdir(exist_ok=True)
+            for index, source in enumerate((original, candidate)):
+                with Image.open(source) as image:
+                    image = image.convert("RGB")
+                    draw = ImageDraw.Draw(image)
+                    width = max(1, image.width//240)
+                    if checks.get("local_repair"):
+                        x0,y0,x1,y1 = checks["local_repair"]["box"]
+                        draw.rectangle((x0,y0,x1-1,y1-1),outline="red",width=width)
+                    for region in evidence.get("regions", []):
+                        x0,y0,x1,y1 = region["box"]
+                        draw.rectangle((x0*image.width,y0*image.height,min(image.width-1,x1*image.width),
+                                        min(image.height-1,y1*image.height)),outline="cyan",width=width)
+                    marked=folder/f"{candidate.stem}_overview_{index}.png"
+                    image.save(marked)
+                    paths[index]=marked
+            focus += ("Red outlines mark the entire selected rectangle, including foreground AND background. "
+                      "Cyan outlines mark automatically detected new-color regions. These outlines are evaluation overlays, not edited content. "
+                      "Evidence coordinates refer to normalized FULL-image coordinates in images 1 and 2. ")
+        if checks.get("local_repair"):
+            folder = job.path / "validation"
+            folder.mkdir(exist_ok=True)
+            box = checks["local_repair"]["box"]
+            for name, source in (("before", original), ("after", candidate)):
+                output = folder / f"{candidate.stem}_{name}.png"
+                with Image.open(source) as image:
+                    image.crop(box).save(output)
+                paths.append(output)
+            focus += ("Images 3 and 4 show the exact selected region (rectangle) before and after restoration, without overlays. "
+                      "Assess ALL content there, including sky, grass and other background, not just the main object. ")
+        policy = (
+            "Image 1 is original; image 2 is candidate. Evaluate against the ORIGINAL user request below. "
+            "The original request defines permitted changes. Preserve only the content and attributes it does not ask to change. "
+            "Allow restoration-related changes: denoising can remove grain and alter fine texture; deblurring can sharpen edges; "
+            "low-light enhancement can brighten; dehazing can recover contrast and color. Pixel differences alone are not a failure. "
+            "Classify appearance_change: normal_repair for ordinary expected restoration without unexplained color blocks; "
+            "user_requested when the visible appearance change is justified by the ORIGINAL request, including explicit "
+            "recoloring or background replacement (cite the requested change in reason); "
+            "unexpected for unrequested artifacts, fills or background replacement; uncertain when evidence cannot be resolved. "
+            "A new-color alert is evidence, not an automatic rejection. Its bounding box encloses changed pixels but can also "
+            "contain unchanged objects; inspect actual pixels, not the bounding box alone. Never infer an object was overwritten "
+            "merely because it falls inside an alert box. Explicitly requested background fills and color edits can be valid. "
+            "Check reported locations against the selection; a rectangle is not an object segmentation mask. "
+            "Reject only observed violations of the request. Use uncertain when an apparent violation cannot be confirmed. "
+            "Unexpected changes require reject. "
+            "Accept only clear improvement and requested content preservation. "
+            "If rejecting, identify the location, the change and the request it violates. "
+            "Detection confidence increases do not prove color or background fidelity. "
+            "Original user request: " + json.dumps(job.data.get("requirement",""),ensure_ascii=False) +
+            "\nChecks and appearance evidence: " + json.dumps(checks))
+        return self.vlm(paths,focus+policy,Verdict,job)
 
     def image_input(self, original, job, index):
         raw = Path(original).read_bytes()

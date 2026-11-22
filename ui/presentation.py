@@ -4,7 +4,8 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageOps
 
-LABELS = {"accepted": "已接受", "rejected": "未通过", "executing": "正在处理", "execution_failed": "执行失败"}
+LABELS = {"accepted": "已接受", "rejected": "未通过", "executing": "正在处理", "execution_failed": "执行失败",
+          "original": "已保留"}
 REASONS = {"aspect_ratio": "宽高比变化", "object_position": "目标位置变化", "matched": "主要目标匹配",
            "suspected_count_change": "目标对应关系需复核", "high_confidence_suspected_count_change": "疑似目标增删",
            "unreliable_or_truncated_detection": "目标检测需复核"}
@@ -66,6 +67,8 @@ def preview_image(path, objects=()):
 
 def prompt_text(directory, candidate, snapshot):
     if candidate.get("source") != "image":
+        if snapshot.get("local_repair"):
+            return "专用工具处理选区及周围 32 像素上下文，最终仅回贴选区。"
         return "专用工具直接处理原图。"
     for request in snapshot.get("edit_requests", []):
         if request["candidate"] == candidate.get("path") or request["prompt_file"] == candidate.get("prompt_file"):

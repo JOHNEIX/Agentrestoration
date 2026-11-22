@@ -132,9 +132,86 @@ class Verdict(BaseModel):
     reason: str
     retry_instruction: str
     structure_issue: Literal["count_change", "position_change", "other", "none", "uncertain"] = "uncertain"
+    appearance_change: Literal["normal_repair", "user_requested", "unexpected", "uncertain"] = Field(
+        default="uncertain",
+        description="normal_repair: expected restoration changes without unexplained color blocks; "
+        "user_requested: visible appearance change is justified by the ORIGINAL user request; "
+        "unexpected: unrequested background replacement, flat color fill or other artifact; uncertain: cannot confirm.")
 
     def accepted(self):
-        return self.decision == "accept" and self.quality_improved is True and self.structure_preserved is True
+        return (self.decision == "accept" and self.quality_improved is True and self.structure_preserved is True
+                and self.appearance_change in ("normal_repair", "user_requested"))
+
+
+def appearance_evidence(original, candidate, box=None):
+    """Locate large, smooth, newly chromatic regions; evidence, not a quality verdict."""
+    import numpy as np
+    from PIL import ImageFilter
+    with Image.open(original) as image:
+        original_size = image.size
+        source = image.convert("RGB")
+    with Image.open(candidate) as image:
+        result = image.convert("RGB")
+    if result.size != source.size:
+        result = result.resize(source.size, Image.Resampling.LANCZOS)
+    box = tuple(box or (0, 0, *source.size))
+    source, result = source.crop(box), result.crop(box)
+    size = source.size
+    source.thumbnail((256,256))
+    result = result.resize(source.size, Image.Resampling.LANCZOS)
+    a = np.asarray(source.filter(ImageFilter.GaussianBlur(1.5)), dtype=np.float32)/255
+    b = np.asarray(result.filter(ImageFilter.GaussianBlur(1.5)), dtype=np.float32)/255
+    chroma_a = a/(a.sum(axis=2,keepdims=True)+1e-6)
+    chroma_b = b/(b.sum(axis=2,keepdims=True)+1e-6)
+    shift = np.linalg.norm(chroma_b-chroma_a,axis=2)
+    saturation = (b.max(axis=2)-b.min(axis=2))/(b.max(axis=2)+1e-6)
+    gradient = np.zeros(b.shape[:2], dtype=np.float32)
+    gradient[:,1:] = np.max(np.abs(b[:,1:]-b[:,:-1]),axis=2)
+    gradient[1:] = np.maximum(gradient[1:],np.max(np.abs(b[1:]-b[:-1]),axis=2))
+    mask = (shift>.12) & (saturation>.35) & (gradient<.025)
+    height,width=mask.shape
+    regions=[]
+    # Flood fill bounds memory and avoids a new image-processing dependency.
+    visited=np.zeros_like(mask)
+    for y,x in zip(*np.nonzero(mask)):
+        if visited[y,x]: continue
+        visited[y,x]=True
+        stack=[(int(y),int(x))]
+        points=[]
+        while stack:
+            py,px=stack.pop();points.append((py,px))
+            for ny,nx in ((py-1,px),(py+1,px),(py,px-1),(py,px+1)):
+                if 0<=ny<height and 0<=nx<width and mask[ny,nx] and not visited[ny,nx]:
+                    visited[ny,nx]=True;stack.append((ny,nx))
+        if len(points)<max(16,.03*width*height): continue
+        ys,xs=np.asarray(points).T
+        absolute=[box[0]+int(xs.min())*size[0]/width,box[1]+int(ys.min())*size[1]/height,
+                  box[0]+(int(xs.max())+1)*size[0]/width,box[1]+(int(ys.max())+1)*size[1]/height]
+        regions.append(dict(box=[round(v/original_size[i%2],6) for i,v in enumerate(absolute)],
+                            area_fraction=round(len(points)/(width*height),6),
+                            before_rgb=(a[ys,xs].mean(axis=0)*255).round().astype(int).tolist(),
+                            after_rgb=(b[ys,xs].mean(axis=0)*255).round().astype(int).tolist()))
+    regions.sort(key=lambda r:r["area_fraction"],reverse=True)
+    return dict(status="suspect" if regions else "clear", regions=regions[:8],
+                coordinate_space="normalized_full_image", scope="selection" if box!=(0,0,*original_size) else "full_image",
+                method="smooth_novel_chroma_v1",
+                thresholds=dict(chroma_shift=.12,saturation=.35,gradient=.025,min_area_fraction=.03),
+                threshold_status="initial_regression_checked")
+
+
+def resolve_verdict(verdict, evidence):
+    """Resolve contradictions locally without another VLM call."""
+    update={}
+    if verdict.appearance_change == "unexpected":
+        update["decision"]="reject"
+    elif verdict.decision == "accept" and (
+        verdict.appearance_change == "uncertain" or
+        (evidence["status"] == "suspect" and verdict.appearance_change == "normal_repair")
+    ):
+        update=dict(decision="uncertain",
+                    reason="外观变化未确认，或色块证据与正常修复结论冲突。 "+verdict.reason,
+                    retry_instruction="Review the reported color regions. Preserve background and appearance unless the original user requested their change.")
+    return verdict.model_copy(update=update)
 
 
 class Job:

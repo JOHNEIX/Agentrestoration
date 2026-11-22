@@ -84,7 +84,8 @@ class FakeAPI:
         return dest
     def compare(self,*args):
         return Verdict(decision="accept" if self.accept else "uncertain", quality_improved=self.accept,
-                       structure_preserved=self.accept,issues=[],reason="test",retry_instruction="denoise")
+                       structure_preserved=self.accept,appearance_change="normal_repair",
+                       issues=[],reason="test",retry_instruction="denoise")
 
 
 class Tool:

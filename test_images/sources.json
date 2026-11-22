@@ -1,0 +1,132 @@
+{
+  "purpose": "Representative degraded inputs for manual system trials",
+  "images": [
+    {
+      "file": "01_noise15_statues.png",
+      "degradation": "gaussian_noise",
+      "dataset": "CBSD68",
+      "sigma": 15,
+      "recommended_task": "gaussian_denoising",
+      "source": "F:\\cvlab\\datasets\\test-data\\denoising_testsets\\CBSD68_15\\101085.png",
+      "sha256": "7f2e5d8c96e35cf91b1104831c7172f642634f09cd73adc28a5aeabc3ca123bb",
+      "size": [
+        321,
+        481
+      ],
+      "bytes": 407089
+    },
+    {
+      "file": "02_noise25_statues.png",
+      "degradation": "gaussian_noise",
+      "dataset": "CBSD68",
+      "sigma": 25,
+      "recommended_task": "gaussian_denoising",
+      "source": "F:\\cvlab\\datasets\\test-data\\denoising_testsets\\CBSD68_25\\101085.png",
+      "sha256": "083a246c37cefddabec1c0b4fd27a941ac25bfdbbe7edd3143ffa7bf13c87b41",
+      "size": [
+        321,
+        481
+      ],
+      "bytes": 430059
+    },
+    {
+      "file": "03_noise50_statues.png",
+      "degradation": "gaussian_noise",
+      "dataset": "CBSD68",
+      "sigma": 50,
+      "recommended_task": "gaussian_denoising",
+      "source": "F:\\cvlab\\datasets\\test-data\\denoising_testsets\\CBSD68_50\\101085.png",
+      "sha256": "b70beebe5f265fe628cbf44db74983666fa259e0731bce9b715b62c2e26fc2bd",
+      "size": [
+        321,
+        481
+      ],
+      "bytes": 456897
+    },
+    {
+      "file": "04_noise25_elephants.png",
+      "degradation": "gaussian_noise",
+      "dataset": "CBSD68",
+      "sigma": 25,
+      "recommended_task": "gaussian_denoising",
+      "source": "F:\\cvlab\\datasets\\test-data\\denoising_testsets\\CBSD68_25\\296059.png",
+      "sha256": "19de692501205bf4ecbf719289a157cc7dcc87e14ed50d0740fc875fa758249a",
+      "size": [
+        481,
+        321
+      ],
+      "bytes": 424743
+    },
+    {
+      "file": "05_haze_city.jpg",
+      "degradation": "haze",
+      "dataset": "SOTS",
+      "sigma": null,
+      "recommended_task": "dehazing",
+      "source": "F:\\cvlab\\datasets\\test-data\\SOTS\\IN\\0001_0.8_0.2.jpg",
+      "sha256": "34e1b70265ddf2258577a8cb7497b2ef4d25b535e93201bd3f2c3f9788a78e1a",
+      "size": [
+        548,
+        412
+      ],
+      "bytes": 128698
+    },
+    {
+      "file": "06_haze_building.jpg",
+      "degradation": "haze",
+      "dataset": "SOTS",
+      "sigma": null,
+      "recommended_task": "dehazing",
+      "source": "F:\\cvlab\\datasets\\test-data\\SOTS\\IN\\0003_0.8_0.2.jpg",
+      "sha256": "3bce196a9863a9933c1f42737e7cad14c1bbff94b6e4c9fd17c055ec88504481",
+      "size": [
+        548,
+        308
+      ],
+      "bytes": 63848
+    },
+    {
+      "file": "07_rain_bears.png",
+      "degradation": "rain",
+      "dataset": "Rain100L",
+      "sigma": null,
+      "recommended_task": "auto",
+      "source": "F:\\cvlab\\datasets\\test-data\\Rain100L\\input\\1.png",
+      "sha256": "affa5644965e5e4f84d53a08f2c59015af022613d5ec8dbbc61c07cec5d05056",
+      "size": [
+        480,
+        320
+      ],
+      "bytes": 291170
+    },
+    {
+      "file": "08_rain_landscape.png",
+      "degradation": "rain",
+      "dataset": "Rain100L",
+      "sigma": null,
+      "recommended_task": "auto",
+      "source": "F:\\cvlab\\datasets\\test-data\\Rain100L\\input\\10.png",
+      "sha256": "7d41f20424ff724ba57504685e87413c9259b5c0f77a471aa05ad5e1fdd41728",
+      "size": [
+        320,
+        480
+      ],
+      "bytes": 277769
+    },
+    {
+      "file": "09_low_light_kitchen.png",
+      "degradation": "low_light",
+      "dataset": "LOL-v1",
+      "sigma": null,
+      "recommended_task": "low_light",
+      "source": "F:\\Agentrestoration\\.cache\\tool_research\\retinex_111.png",
+      "sha256": "5f10ef298a617c239e0728610a565416b4503ed40384cc9710e8bbd55f22ef47",
+      "size": [
+        600,
+        400
+      ],
+      "bytes": 318609,
+      "author_example_url": "https://github.com/caiyuanhao1998/Retinexformer/blob/master/demo/examples/111.png"
+    }
+  ]
+}

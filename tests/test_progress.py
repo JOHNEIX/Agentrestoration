@@ -43,7 +43,8 @@ class API(Qwen):
         self.comparisons+=1
         accepted=self.comparisons>1
         return Verdict(decision="accept" if accepted else "reject",quality_improved=accepted,
-                       structure_preserved=True,issues=[],reason="test",retry_instruction="preserve texture")
+                       structure_preserved=True,appearance_change="normal_repair",
+                       issues=[],reason="test",retry_instruction="preserve texture")
 
 
 def test_actual_prompts_and_progress(tmp_path):

@@ -46,7 +46,7 @@ def test_app_result_selection_does_not_rerun_job(tmp_path,monkeypatch):
     from ui import service
     source=tmp_path/"input.png";Image.new("RGB",(64,64)).save(source)
     calls=[]
-    def execute(path,requirement,task,on_event):
+    def execute(path,requirement,task,on_event,origin=None):
         calls.append(path)
         return run(path,requirement,Settings(),FakeAPI(accept=True),Detection(),Tool(),tmp_path/"jobs",on_event=on_event,
                    log_root=tmp_path/"log/tasks")
@@ -129,3 +129,42 @@ def test_exit_button_disabled_while_processing():
     app.session_state["running"] = True
     app.run(timeout=20)
     assert app.button(key="shutdown_workbench").disabled
+
+
+def test_local_mode_requires_selection_and_passes_region(tmp_path, monkeypatch):
+    from streamlit.testing.v1 import AppTest
+    from PIL import Image
+    from ui import service, region_selector
+    from agentrestoration.pipeline import run
+    from agentrestoration.core import Settings
+    from test_core import FakeAPI, Detection, Tool
+    selected = []
+    received = []
+    def picker(image, image_id, region):
+        return dict(image_id=image_id,region=selected[0]) if selected else None
+    monkeypatch.setattr(region_selector, "select_region", picker)
+    def execute(path, requirement, task, on_event, region=None, origin=None):
+        received.append(region)
+        return run(path,requirement,Settings(),FakeAPI(accept=True),Detection(),Tool(),tmp_path/"runs",
+                   on_event=on_event, region=region,log_root=tmp_path/"log/tasks")
+    monkeypatch.setattr(service,"execute",execute)
+    source=tmp_path/"input.png";Image.new("RGB",(256,256)).save(source)
+    app=AppTest.from_file(Path(__file__).resolve().parents[1]/"ui/app.py").run(timeout=20)
+    app.file_uploader[0].set_value(("input.png",source.read_bytes(),"image/png")).run()
+    app.toggle(key="local_mode").set_value(True).run()
+    assert app.button(key="start_repair").disabled
+    selected.append(dict(x0=.25,y0=.25,x1=.75,y1=.75))
+    app.run()
+    assert not app.exception
+    assert not app.button(key="start_repair").disabled
+    app.button(key="start_repair").click().run(timeout=30)
+    assert not app.exception
+    assert received == selected
+    assert app.session_state["snapshot"]["status"]=="completed"
+    assert app.session_state["snapshot"]["local_repair"]["box"] == [64,64,192,192]
+    # Clearing the next-round selection preserves the completed round.
+    selected[0]=None
+    app.run()
+    assert app.session_state["repair_region"] is None
+    assert app.session_state["snapshot"]["status"] == "completed"
+    assert app.button(key="start_repair").disabled

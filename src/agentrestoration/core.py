@@ -304,7 +304,7 @@ def structure(original, candidate, detector, s, baseline_uncertain=False):
     a, b = detector.detect(original), detector.detect(candidate)
     a = [o for o in a if o["confidence"] >= s.confidence and o["area"] >= s.min_area]
     b = [o for o in b if o["confidence"] >= s.confidence and o["area"] >= s.min_area]
-    base = dict(ratio_error=error, original=a, candidate=b, matches=[])
+    base = dict(ratio_error=error, original=a, candidate=b, matches=[], detector_role="advisory")
     if not a or max(len(a), len(b)) > s.max_objects:
         return dict(base, status="uncertain", severe=False, reason="unreliable_or_truncated_detection")
     pairs = sorted((math.dist(x["center"], y["center"]), i, j)
@@ -318,18 +318,10 @@ def structure(original, candidate, detector, s, baseline_uncertain=False):
         base["matches"].append(dict(original=i, candidate=j, distance=distance))
     moved = [p for p in base["matches"] if p["distance"] > s.position_pass]
     if moved:
-        return dict(base, status="fail", severe=any(p["distance"] >= s.position_severe for p in moved),
+        return dict(base, status="uncertain", severe=False,
                     reason="object_position", threshold=s.position_pass)
-    # Confidence alone cannot establish whether an unmatched detection is a real deletion.
+    # Restoration can change boxes and labels without changing the depicted objects.
     if len(used_a) != len(a) or len(used_b) != len(b):
-        unmatched = [x for i,x in enumerate(a) if i not in used_a] + [x for i,x in enumerate(b) if i not in used_b]
-        reliable = (not baseline_uncertain and bool(base["matches"]) and
-            all(x["confidence"] >= s.count_reliability_threshold for x in a + unmatched))
-        if reliable:
-            return dict(base, status="fail", severe=True, reason="high_confidence_suspected_count_change",
-                        confidence_threshold=s.count_reliability_threshold,
-                        unmatched_original=sorted(set(range(len(a))) - used_a),
-                        unmatched_candidate=sorted(set(range(len(b))) - used_b))
         return dict(base, status="uncertain", severe=False, reason="suspected_count_change",
                     unmatched_original=sorted(set(range(len(a))) - used_a),
                     unmatched_candidate=sorted(set(range(len(b))) - used_b))

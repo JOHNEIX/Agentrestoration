@@ -1,0 +1,563 @@
+{
+  "selection": "Exclude entire paired trial when B.output_is_input is true",
+  "aggregation": "Mean retained repeats within scene, then equal-weight mean across scenes",
+  "total_trial_count": 60,
+  "retained_trial_count": 57,
+  "excluded_trial_count": 3,
+  "excluded": [
+    {
+      "scene": "14037",
+      "repeat": 1,
+      "reason": "B.output_is_input == true",
+      "B_output_sha256": "a9a8ead34224f2d878ff883739d7e34e28db8426b40dc6730fe774f0e31c44bc"
+    },
+    {
+      "scene": "14037",
+      "repeat": 2,
+      "reason": "B.output_is_input == true",
+      "B_output_sha256": "a9a8ead34224f2d878ff883739d7e34e28db8426b40dc6730fe774f0e31c44bc"
+    },
+    {
+      "scene": "14037",
+      "repeat": 3,
+      "reason": "B.output_is_input == true",
+      "B_output_sha256": "a9a8ead34224f2d878ff883739d7e34e28db8426b40dc6730fe774f0e31c44bc"
+    }
+  ],
+  "retained": [
+    {
+      "scene": "101085",
+      "repeat": 1
+    },
+    {
+      "scene": "101085",
+      "repeat": 2
+    },
+    {
+      "scene": "101085",
+      "repeat": 3
+    },
+    {
+      "scene": "103070",
+      "repeat": 1
+    },
+    {
+      "scene": "103070",
+      "repeat": 2
+    },
+    {
+      "scene": "103070",
+      "repeat": 3
+    },
+    {
+      "scene": "105025",
+      "repeat": 1
+    },
+    {
+      "scene": "105025",
+      "repeat": 2
+    },
+    {
+      "scene": "105025",
+      "repeat": 3
+    },
+    {
+      "scene": "119082",
+      "repeat": 1
+    },
+    {
+      "scene": "119082",
+      "repeat": 2
+    },
+    {
+      "scene": "119082",
+      "repeat": 3
+    },
+    {
+      "scene": "143090",
+      "repeat": 1
+    },
+    {
+      "scene": "143090",
+      "repeat": 2
+    },
+    {
+      "scene": "143090",
+      "repeat": 3
+    },
+    {
+      "scene": "145086",
+      "repeat": 1
+    },
+    {
+      "scene": "145086",
+      "repeat": 2
+    },
+    {
+      "scene": "145086",
+      "repeat": 3
+    },
+    {
+      "scene": "16077",
+      "repeat": 1
+    },
+    {
+      "scene": "16077",
+      "repeat": 2
+    },
+    {
+      "scene": "16077",
+      "repeat": 3
+    },
+    {
+      "scene": "167083",
+      "repeat": 1
+    },
+    {
+      "scene": "167083",
+      "repeat": 2
+    },
+    {
+      "scene": "167083",
+      "repeat": 3
+    },
+    {
+      "scene": "182053",
+      "repeat": 1
+    },
+    {
+      "scene": "182053",
+      "repeat": 2
+    },
+    {
+      "scene": "182053",
+      "repeat": 3
+    },
+    {
+      "scene": "196073",
+      "repeat": 1
+    },
+    {
+      "scene": "196073",
+      "repeat": 2
+    },
+    {
+      "scene": "196073",
+      "repeat": 3
+    },
+    {
+      "scene": "21077",
+      "repeat": 1
+    },
+    {
+      "scene": "21077",
+      "repeat": 2
+    },
+    {
+      "scene": "21077",
+      "repeat": 3
+    },
+    {
+      "scene": "216081",
+      "repeat": 1
+    },
+    {
+      "scene": "216081",
+      "repeat": 2
+    },
+    {
+      "scene": "216081",
+      "repeat": 3
+    },
+    {
+      "scene": "219090",
+      "repeat": 1
+    },
+    {
+      "scene": "219090",
+      "repeat": 2
+    },
+    {
+      "scene": "219090",
+      "repeat": 3
+    },
+    {
+      "scene": "223061",
+      "repeat": 1
+    },
+    {
+      "scene": "223061",
+      "repeat": 2
+    },
+    {
+      "scene": "223061",
+      "repeat": 3
+    },
+    {
+      "scene": "241048",
+      "repeat": 1
+    },
+    {
+      "scene": "241048",
+      "repeat": 2
+    },
+    {
+      "scene": "241048",
+      "repeat": 3
+    },
+    {
+      "scene": "260058",
+      "repeat": 1
+    },
+    {
+      "scene": "260058",
+      "repeat": 2
+    },
+    {
+      "scene": "260058",
+      "repeat": 3
+    },
+    {
+      "scene": "285079",
+      "repeat": 1
+    },
+    {
+      "scene": "285079",
+      "repeat": 2
+    },
+    {
+      "scene": "285079",
+      "repeat": 3
+    },
+    {
+      "scene": "291000",
+      "repeat": 1
+    },
+    {
+      "scene": "291000",
+      "repeat": 2
+    },
+    {
+      "scene": "291000",
+      "repeat": 3
+    },
+    {
+      "scene": "296059",
+      "repeat": 1
+    },
+    {
+      "scene": "296059",
+      "repeat": 2
+    },
+    {
+      "scene": "296059",
+      "repeat": 3
+    }
+  ],
+  "full": {
+    "A": {
+      "trials": 60,
+      "scenes": 20,
+      "metrics": {
+        "psnr": {
+          "mean": 22.29065008367709,
+          "trial_mean": 22.29065008367709,
+          "valid_trials": 60,
+          "scenes": 20,
+          "ci": [
+            20.946471468265305,
+            23.657766601341798
+          ]
+        },
+        "ssim": {
+          "mean": 0.6457542336074653,
+          "trial_mean": 0.6457542336074653,
+          "valid_trials": 60,
+          "scenes": 20,
+          "ci": [
+            0.5927074729312356,
+            0.6975860025028402
+          ]
+        },
+        "lpips": {
+          "mean": 0.12776518377164997,
+          "trial_mean": 0.12776518377165,
+          "valid_trials": 60,
+          "scenes": 20,
+          "ci": [
+            0.11721640028680363,
+            0.1380347098844747
+          ]
+        }
+      }
+    },
+    "B": {
+      "trials": 60,
+      "scenes": 20,
+      "metrics": {
+        "psnr": {
+          "mean": 21.936725492117713,
+          "trial_mean": 21.936725492117716,
+          "valid_trials": 60,
+          "scenes": 20,
+          "ci": [
+            20.73889577724949,
+            23.207763879531797
+          ]
+        },
+        "ssim": {
+          "mean": 0.6198173337171106,
+          "trial_mean": 0.6198173337171106,
+          "valid_trials": 60,
+          "scenes": 20,
+          "ci": [
+            0.5539544188838551,
+            0.6838150739890728
+          ]
+        },
+        "lpips": {
+          "mean": 0.15913026854395865,
+          "trial_mean": 0.15913026854395868,
+          "valid_trials": 60,
+          "scenes": 20,
+          "ci": [
+            0.11973338523879648,
+            0.22589018514690293
+          ]
+        }
+      }
+    },
+    "C": {
+      "trials": 60,
+      "scenes": 20,
+      "metrics": {
+        "psnr": {
+          "mean": 22.53676376394787,
+          "trial_mean": 22.536763763947867,
+          "valid_trials": 60,
+          "scenes": 20,
+          "ci": [
+            20.964083461709574,
+            24.220151936628604
+          ]
+        },
+        "ssim": {
+          "mean": 0.6515151532887895,
+          "trial_mean": 0.6515151532887894,
+          "valid_trials": 60,
+          "scenes": 20,
+          "ci": [
+            0.5950489526188376,
+            0.7065684645893602
+          ]
+        },
+        "lpips": {
+          "mean": 0.12584640495479105,
+          "trial_mean": 0.12584640495479107,
+          "valid_trials": 60,
+          "scenes": 20,
+          "ci": [
+            0.11472544634404284,
+            0.13727310123542943
+          ]
+        }
+      }
+    }
+  },
+  "filtered": {
+    "A": {
+      "trials": 57,
+      "scenes": 19,
+      "metrics": {
+        "psnr": {
+          "mean": 22.00780072138365,
+          "trial_mean": 22.007800721383646,
+          "valid_trials": 57,
+          "scenes": 19,
+          "ci": [
+            20.720000718028874,
+            23.358611239384246
+          ]
+        },
+        "ssim": {
+          "mean": 0.6407303704249261,
+          "trial_mean": 0.6407303704249261,
+          "valid_trials": 57,
+          "scenes": 19,
+          "ci": [
+            0.5866082354003411,
+            0.6944687789539938
+          ]
+        },
+        "lpips": {
+          "mean": 0.12772866299277855,
+          "trial_mean": 0.12772866299277857,
+          "valid_trials": 57,
+          "scenes": 19,
+          "ci": [
+            0.11628111321805862,
+            0.139200518015576
+          ]
+        }
+      }
+    },
+    "B": {
+      "trials": 57,
+      "scenes": 19,
+      "metrics": {
+        "psnr": {
+          "mean": 21.9937902451395,
+          "trial_mean": 21.993790245139504,
+          "valid_trials": 57,
+          "scenes": 19,
+          "ci": [
+            20.708577481207165,
+            23.343737435104167
+          ]
+        },
+        "ssim": {
+          "mean": 0.6401166873062852,
+          "trial_mean": 0.6401166873062852,
+          "valid_trials": 57,
+          "scenes": 19,
+          "ci": [
+            0.5856139851321179,
+            0.6938979511304088
+          ]
+        },
+        "lpips": {
+          "mean": 0.12775560350794538,
+          "trial_mean": 0.1277556035079454,
+          "valid_trials": 57,
+          "scenes": 19,
+          "ci": [
+            0.11628111321805862,
+            0.13927389513047636
+          ]
+        }
+      }
+    },
+    "C": {
+      "trials": 57,
+      "scenes": 19,
+      "metrics": {
+        "psnr": {
+          "mean": 21.9937902451395,
+          "trial_mean": 21.993790245139504,
+          "valid_trials": 57,
+          "scenes": 19,
+          "ci": [
+            20.708577481207165,
+            23.343737435104167
+          ]
+        },
+        "ssim": {
+          "mean": 0.6401166873062852,
+          "trial_mean": 0.6401166873062852,
+          "valid_trials": 57,
+          "scenes": 19,
+          "ci": [
+            0.5856139851321179,
+            0.6938979511304088
+          ]
+        },
+        "lpips": {
+          "mean": 0.12775560350794538,
+          "trial_mean": 0.1277556035079454,
+          "valid_trials": 57,
+          "scenes": 19,
+          "ci": [
+            0.11628111321805862,
+            0.13927389513047636
+          ]
+        }
+      }
+    }
+  },
+  "paired": {
+    "B-A": {
+      "psnr": {
+        "mean_delta": -0.014010476244147366,
+        "ci": [
+          -0.042031428732442096,
+          0.0
+        ],
+        "scenes": 19,
+        "trials": 57
+      },
+      "ssim": {
+        "mean_delta": -0.000613683118640773,
+        "ci": [
+          -0.001841049355922319,
+          0.0
+        ],
+        "scenes": 19,
+        "trials": 57
+      },
+      "lpips": {
+        "mean_delta": 2.6940515166834782e-05,
+        "ci": [
+          0.0,
+          8.082154550050434e-05
+        ],
+        "scenes": 19,
+        "trials": 57
+      }
+    },
+    "C-B": {
+      "psnr": {
+        "mean_delta": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "scenes": 19,
+        "trials": 57
+      },
+      "ssim": {
+        "mean_delta": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "scenes": 19,
+        "trials": 57
+      },
+      "lpips": {
+        "mean_delta": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "scenes": 19,
+        "trials": 57
+      }
+    }
+  },
+  "source": {
+    "results_sha256": "d5773abe640ebb12a6e0ed4b2944208b4b89a43475b50db4f25e015d5be44bbf",
+    "manifest_sha256": "e4b296d09e875ab482fe1800fb8fe7a63e8b97d22f8a1df67bd44927cc25c144",
+    "scored_rows_sha256": "a59643b8f14f5dc2f2cfbcf0f6edc6fc2fe0183dba1d10811f6da114b689c773",
+    "lpips": {
+      "metric": "LPIPS",
+      "network": "alex",
+      "version": "0.1",
+      "package_version": "0.1.4",
+      "torch_version": "2.15.0+cpu",
+      "torchvision_version": "0.29.2",
+      "backbone": "AlexNet_Weights.IMAGENET1K_V1",
+      "backbone_sha256": "7be5be791159472b1fbf3c69796f7cb30dca7ad8466c2df70058c37116cdee02",
+      "calibration_sha256": "df73285e35b22355a2df87cdb6b70b343713b667eddbda73e1977e0c860835c0",
+      "device": "cpu",
+      "dtype": "float32",
+      "normalization": "RGB / 127.5 - 1",
+      "spatial": false,
+      "eval_mode": true,
+      "image_size": "same evaluation copy as PSNR/SSIM; no extra resizing",
+      "source": "https://github.com/richzhang/PerceptualSimilarity"
+    },
+    "code_sha256": "5c21f9f517851ef7912efde5c4889abdb59c8c1c5a71373a36919c16ac52bcda"
+  },
+  "restoration_api_calls": 0,
+  "vlm_api_calls": 0
+}

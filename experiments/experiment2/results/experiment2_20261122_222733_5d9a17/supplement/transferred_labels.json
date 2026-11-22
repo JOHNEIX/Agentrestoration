@@ -1,0 +1,439 @@
+{
+  "run_id": "experiment2_20261122_222733_5d9a17",
+  "labels": [
+    {
+      "sample_id": "H001",
+      "output_sha256": "21b6c82c85d455bb5ff6f666da1b8f3fe2d3745b012065329e578bc6d3158e06",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "色调略有不同"
+    },
+    {
+      "sample_id": "H002",
+      "output_sha256": "8ba67ba6b74b3d9f696bfde52afb565f64f48fedcb41f646e1a0b1de936d450d",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "色调略有不同"
+    },
+    {
+      "sample_id": "H003",
+      "output_sha256": "c487d0a642a6b95b6c9a9d015cd49ada75ca77da65db58447966f80ff4df2029",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": ""
+    },
+    {
+      "sample_id": "H004",
+      "output_sha256": "32be0d5ed15d03b3905aa917edf43741d3353dfc56955456f19659328ff47d3a",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": ""
+    },
+    {
+      "sample_id": "H005",
+      "output_sha256": "fb140277849ba948bc2c0c44e62f14b8244a2842ec414d4b337128bffc9cdaf1",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": ""
+    },
+    {
+      "sample_id": "H006",
+      "output_sha256": "a9a8ead34224f2d878ff883739d7e34e28db8426b40dc6730fe774f0e31c44bc",
+      "content_error": "no",
+      "quality": "unchanged",
+      "notes": "无改善"
+    },
+    {
+      "sample_id": "H007",
+      "output_sha256": "020c4bb39566aa24d398974221e6b72938a925abbc9093519f33ba865f00e49f",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "色调略有不同，甚至更清晰了"
+    },
+    {
+      "sample_id": "H008",
+      "output_sha256": "5c235185397f9d09de7bc388389aa724a6a2ac778ec0eed0cf0a5d50dd911b3f",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "色调略有不同"
+    },
+    {
+      "sample_id": "H009",
+      "output_sha256": "bd30928eaf55d7f084e4f59770ca75e9198d065050dc0929dc5a2cc067d7d1e4",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "仍然存在明显噪点"
+    },
+    {
+      "sample_id": "H010",
+      "output_sha256": "7d2d7226a431a4f44de635f6b3d8b7cd5d71141eba9ddaa4d9c403cd75a1a89d",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "略显模糊"
+    },
+    {
+      "sample_id": "H011",
+      "output_sha256": "c5b9becae48eab52bfc44b97d7ef7c52eedc143f4bcf258b862ba1a018deb0cb",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": ""
+    },
+    {
+      "sample_id": "H012",
+      "output_sha256": "b9c06a309df21bb22ae4ae389d8e59555749d0eb382213e75f97aece16fe5998",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "色调略有不同"
+    },
+    {
+      "sample_id": "H013",
+      "output_sha256": "e5f0ae2b9cc46fb807a5518cd6de2138ee85047c3f34974d99684e640f17b965",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "略有点模糊"
+    },
+    {
+      "sample_id": "H014",
+      "output_sha256": "4ec92c757350df6b2d919e63d9c2fed4d4be522defbff1d60a838de1929c176a",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "整体色调发生明显变化"
+    },
+    {
+      "sample_id": "H015",
+      "output_sha256": "0767256d1e88e107c5b395faeee3570578d0e34e4aa69528dc4d266d590c0488",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "色调略有不同"
+    },
+    {
+      "sample_id": "H016",
+      "output_sha256": "ff9d97d5f88e318dd0011951cd9ad7e01ba6f3f9cd1e33d17adc4ccf3f6d06ef",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "色调略有不同"
+    },
+    {
+      "sample_id": "H017",
+      "output_sha256": "da8601a78a6b72bb0b311ec37e508d626f3a3dc81e2eb82a3b3ef82ce926be9b",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "色调略有不同"
+    },
+    {
+      "sample_id": "H018",
+      "output_sha256": "c22e497910eb4eeb3eb75ca842d02c6755ba5519f347cc30b8fe8e3c20d4f1cd",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": ""
+    },
+    {
+      "sample_id": "H019",
+      "output_sha256": "cdfd87633d3a471f14de3ba388899d27fa5c3defda935fd275f5d724d7b91cf6",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": ""
+    },
+    {
+      "sample_id": "H020",
+      "output_sha256": "eecebee315224d2326972901f6236bdd779d4bfd502b122ad61b649a634be642",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "色调略有不同"
+    },
+    {
+      "sample_id": "H021",
+      "output_sha256": "33dea42e195ea4b3d4ca3bec22ea12991efd9c7fabcf8b92bc76e8aa47250367",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "草地颜色变化"
+    },
+    {
+      "sample_id": "H022",
+      "output_sha256": "0939f0dd53266acbb70a7a69321fd092442525748634bf67d2736fdbe62c2b54",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "稍微少点反光"
+    },
+    {
+      "sample_id": "H023",
+      "output_sha256": "d8f7cb411e304052d60fec016545cc97f1324b97128cad4458c319adc655672e",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "色调略有不同"
+    },
+    {
+      "sample_id": "H024",
+      "output_sha256": "589599cd7ba0888437bf6ba6d438f4e5fcc63ae273664f9ccd7e962d5ad9fa20",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "大象、草地和天空颜色发生明显变化"
+    },
+    {
+      "sample_id": "H025",
+      "output_sha256": "caf838c7c71bd685dc1f4a64af5388f049ce2105cdc9c21c9382e86b5aa7254a",
+      "content_error": "yes",
+      "quality": "improved",
+      "notes": "广告任务眼睛变了"
+    },
+    {
+      "sample_id": "H026",
+      "output_sha256": "0edb85f3dff8ba38b93709f56fc72d705d19a0943b6b8b827bf1f7dad237cd24",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "略微改善，仍有噪点"
+    },
+    {
+      "sample_id": "H027",
+      "output_sha256": "a055f9b7834944d9fbf54117d92557771ae9ac37255a86787dbe2853747c8abe",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "略有噪点"
+    },
+    {
+      "sample_id": "H028",
+      "output_sha256": "40903e1bd69c32d33e8c981b70abb1fecaf33b169cef2220d8c491a48e59c6cd",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "色调略有不同。略微模糊"
+    },
+    {
+      "sample_id": "H029",
+      "output_sha256": "b5c39a291bac8600c68ec9a24f0a3aa65cc1a4f38d37406a1126247e6ba923af",
+      "content_error": "yes",
+      "quality": "improved",
+      "notes": "小孩表情不对"
+    },
+    {
+      "sample_id": "H030",
+      "output_sha256": "da16571d65ac5ed99ea044fa096576702380fcfaeaa5cf6ebaf44a285e28f124",
+      "content_error": "yes",
+      "quality": "improved",
+      "notes": "广告任务眼睛不对"
+    },
+    {
+      "sample_id": "H031",
+      "output_sha256": "022abc63860ed68522de2bded44b15ac7bbf41094141b07cddd5946f30155f09",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "甚至比原图更清晰了"
+    },
+    {
+      "sample_id": "H032",
+      "output_sha256": "2904d11b96842784e597a728012ef3638e955c158ed271b4f1ddc0544f9d9dc6",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "仍存在噪点"
+    },
+    {
+      "sample_id": "H033",
+      "output_sha256": "7ffaf28569c8c1ec07e1264134965a8ffd0658addb4efea91ff0e8a1ba22d4c4",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "色调略有不同"
+    },
+    {
+      "sample_id": "H034",
+      "output_sha256": "8080af158bc9fd175143cd248aa1fde35e66ee460c03bf731050b0b82d7c7c92",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": ""
+    },
+    {
+      "sample_id": "H035",
+      "output_sha256": "c201962578b2c9b79d640ebde8da4e2d3051a2313d7cec2798fcd2f3ad5e292c",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "色调略有不同"
+    },
+    {
+      "sample_id": "H036",
+      "output_sha256": "278d761aec8d34eb5f0e21384fdb9d3f0fa0845fd8df1e0610a6cc24b6689791",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "色调略有不同"
+    },
+    {
+      "sample_id": "H038",
+      "output_sha256": "aa9d72eacace962d9b1890f807be2415b9501a30d5803865057cd86c72581f8f",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "色调略有不同，景深略有不同"
+    },
+    {
+      "sample_id": "H039",
+      "output_sha256": "fa9fd40ea9baa5cf50b1135c0afbb34d3f4a1ea80324c61b152474bb4d4bb956",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": ""
+    },
+    {
+      "sample_id": "H040",
+      "output_sha256": "582998897469aeff660200e066886a1b9671866e643a38cbd1a9b4c1c3351d2c",
+      "content_error": "yes",
+      "quality": "improved",
+      "notes": "黑色沙子变少"
+    },
+    {
+      "sample_id": "H041",
+      "output_sha256": "d1db01246f5960c05df3517aaca43d935ca3b4dc7ccf011417a80fceaa067df6",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "色调略有不同"
+    },
+    {
+      "sample_id": "H042",
+      "output_sha256": "39b2095f988d3af63406472f9c5385ef296ef288501584e2bd7bfd15a62b339d",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": ""
+    },
+    {
+      "sample_id": "H043",
+      "output_sha256": "7afd08cb5d16cfd93a50a406c03e00a8e8795ef49bd32e3f7556bf4e7a8ba99a",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "色调略有不同"
+    },
+    {
+      "sample_id": "H044",
+      "output_sha256": "ebb1ebc8b8e6602de4f8078d8ac202c20b4af1e933e0db3fca688c1a87103a27",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "图像和天空颜色变化"
+    },
+    {
+      "sample_id": "H045",
+      "output_sha256": "40876552a1d81787e7799c033e85ad12393471a6f8bee670ab498a1fe6443de0",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "稍微有点模糊"
+    },
+    {
+      "sample_id": "H046",
+      "output_sha256": "a2e88b5b5783db8f7ee7e8bf670876817dfb0bb64fbad749625bef5745c2dbbd",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": ""
+    },
+    {
+      "sample_id": "H047",
+      "output_sha256": "ae5671f983adb91316cdd3c5370bc1d9b443d8427159ee1fb056b608788212a9",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": ""
+    },
+    {
+      "sample_id": "H048",
+      "output_sha256": "3c2773369ee97c8e2ef29a204e095d98f10ced898cacc16d6b039fcf427fa22a",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "颜色发生变化"
+    },
+    {
+      "sample_id": "H049",
+      "output_sha256": "f308b10d2fed7eb02d3e0086360e6fb57cee69dd0afd2ee8c1d9f5c1209d841a",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": ""
+    },
+    {
+      "sample_id": "H050",
+      "output_sha256": "89179fe1f0fd238ae5e2d431fc8a3d985343c03df3b3d6b3311e2bec42df2de5",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "色调略有不同"
+    },
+    {
+      "sample_id": "H051",
+      "output_sha256": "ff0136aa19d511e6a238a805aebd6257bc87cbe31dfd9ca4ef52a47e70a23762",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": ""
+    },
+    {
+      "sample_id": "H052",
+      "output_sha256": "1442416717d677634607d91856664977e3c776fcd76d700f4a7e758e6de6135e",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "色调略有不同"
+    },
+    {
+      "sample_id": "H053",
+      "output_sha256": "b5cc398446284d68b4377af86b0b72513bbe96b965b17c3bf2b64d07fef45efe",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "略微模糊"
+    },
+    {
+      "sample_id": "H054",
+      "output_sha256": "de96e5189510e04eaa6685fe4b1833395efc4042d54e49483e971d484d0c4cf1",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "略微改善"
+    },
+    {
+      "sample_id": "H055",
+      "output_sha256": "35366451dccad7b8a8f2e2fc0cfd0f89a4f7313634a09048102d23e9789bf87e",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": ""
+    },
+    {
+      "sample_id": "H056",
+      "output_sha256": "62735f055c416c75d20382845153d44b48d15b3650f2f1958d86ca2474f82df2",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": ""
+    },
+    {
+      "sample_id": "H057",
+      "output_sha256": "aaa1c86a76fa06a8e67509bd960d1e65d2da30ca8322cd027fb8c3c18bf5057b",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": ""
+    },
+    {
+      "sample_id": "H058",
+      "output_sha256": "9c9c8fb32ffb80ae3c98c07b4391c0b701990d4cf94be9de03be103d0361a819",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "色调略有不同，略有点模糊"
+    },
+    {
+      "sample_id": "H059",
+      "output_sha256": "db1b63e5d1eaa19456ce1a88de8b0b1dca60485e359e938253fe9683f3e456cd",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "色调略有不同"
+    },
+    {
+      "sample_id": "H060",
+      "output_sha256": "eafbb37d37c418ee5a57e91386416158ee0e16b64480e9b41980e2a0f867994a",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": ""
+    },
+    {
+      "sample_id": "H061",
+      "output_sha256": "1aa0fcf1a4441e727cd4909991f15aa4717107a620721750e2d5cd916cb4ff90",
+      "content_error": "yes",
+      "quality": "improved",
+      "notes": "消除了一些黑色沙子"
+    },
+    {
+      "sample_id": "H062",
+      "output_sha256": "c484470a224330df831375ace808b2fc15e94bec42bfd6a2f521997c16becc86",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "清晰度略差"
+    },
+    {
+      "sample_id": "H063",
+      "output_sha256": "1e2aee31272786c9111a33846013fc05ec320218019bd329f7c0ec71bb9df632",
+      "content_error": "no",
+      "quality": "improved",
+      "notes": "色调略有不同"
+    }
+  ]
+}

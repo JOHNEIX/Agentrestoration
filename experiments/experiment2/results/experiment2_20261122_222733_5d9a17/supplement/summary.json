@@ -1,0 +1,132 @@
+{
+  "perceptual": {
+    "groups": {
+      "A": {
+        "trials": 60,
+        "scenes": 20,
+        "mean_lpips": 0.12776518377164997,
+        "mean_gain_vs_input": 0.33693679956098394,
+        "ci": [
+          0.11721640028680363,
+          0.1380347098844747
+        ],
+        "worse_than_input": 2
+      },
+      "B": {
+        "trials": 60,
+        "scenes": 20,
+        "mean_lpips": 0.15913026854395865,
+        "mean_gain_vs_input": 0.3055717147886753,
+        "ci": [
+          0.11973338523879648,
+          0.22589018514690293
+        ],
+        "worse_than_input": 2
+      },
+      "C": {
+        "trials": 60,
+        "scenes": 20,
+        "mean_lpips": 0.12584640495479105,
+        "mean_gain_vs_input": 0.3388555783778429,
+        "ci": [
+          0.11472544634404284,
+          0.13727310123542943
+        ],
+        "worse_than_input": 2
+      }
+    },
+    "paired": {
+      "B-A": {
+        "mean_delta": 0.03136508477230866,
+        "ci": [
+          0.0,
+          0.09406966082751751
+        ],
+        "scenes": 20,
+        "wins": 0,
+        "ties": 18,
+        "losses": 2
+      },
+      "C-B": {
+        "mean_delta": -0.033283863589167594,
+        "ci": [
+          -0.09985159076750279,
+          0.0
+        ],
+        "scenes": 20,
+        "wins": 1,
+        "ties": 19,
+        "losses": 0
+      }
+    }
+  },
+  "rescue": {
+    "total_trials": 60,
+    "B_not_accepted": 3,
+    "rescued": 3,
+    "rescue_rate_among_B_failures": 1.0,
+    "rescue_rate_all": 0.05,
+    "both_metrics_better": 3,
+    "both_metrics_worse": 0,
+    "both_metrics_equal": 57,
+    "risk": {
+      "A": {
+        "trials": 60,
+        "psnr_degraded": 16,
+        "psnr_degraded_rate": 0.26666666666666666,
+        "psnr_drop_over_1db": 10,
+        "worst_delta_psnr": -4.352345623823499,
+        "bottom_10pct_mean_delta_psnr": -3.9775067222896023
+      },
+      "B": {
+        "trials": 60,
+        "psnr_degraded": 17,
+        "psnr_degraded_rate": 0.2833333333333333,
+        "psnr_drop_over_1db": 10,
+        "worst_delta_psnr": -4.352345623823499,
+        "bottom_10pct_mean_delta_psnr": -3.9775067222896023
+      },
+      "C": {
+        "trials": 60,
+        "psnr_degraded": 17,
+        "psnr_degraded_rate": 0.2833333333333333,
+        "psnr_drop_over_1db": 10,
+        "worst_delta_psnr": -4.352345623823499,
+        "bottom_10pct_mean_delta_psnr": -3.9775067222896023
+      }
+    }
+  },
+  "human_review": {
+    "unique_outputs": 63,
+    "unique_annotated": 62,
+    "groups": {
+      "A": {
+        "yes": 5,
+        "no": 55,
+        "uncertain": 0,
+        "pending": 0,
+        "known": 60,
+        "total": 60,
+        "content_error_rate": 0.08333333333333333
+      },
+      "B": {
+        "yes": 5,
+        "no": 54,
+        "uncertain": 0,
+        "pending": 1,
+        "known": 59,
+        "total": 60,
+        "content_error_rate": 0.0847457627118644
+      },
+      "C": {
+        "yes": 5,
+        "no": 54,
+        "uncertain": 0,
+        "pending": 1,
+        "known": 59,
+        "total": 60,
+        "content_error_rate": 0.0847457627118644
+      }
+    }
+  }
+}

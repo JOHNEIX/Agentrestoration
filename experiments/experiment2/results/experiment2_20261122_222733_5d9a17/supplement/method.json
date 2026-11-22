@@ -1,0 +1,34 @@
+{
+  "stage": "post_hoc_additional_evaluation",
+  "time": "2026-11-22T14:41:14.708760+00:00",
+  "restoration_api_calls": 0,
+  "results_sha256": "d5773abe640ebb12a6e0ed4b2944208b4b89a43475b50db4f25e015d5be44bbf",
+  "manifest_sha256": "e4b296d09e875ab482fe1800fb8fe7a63e8b97d22f8a1df67bd44927cc25c144",
+  "lpips": {
+    "metric": "LPIPS",
+    "network": "alex",
+    "version": "0.1",
+    "package_version": "0.1.4",
+    "torch_version": "2.15.0+cpu",
+    "torchvision_version": "0.29.2",
+    "backbone": "AlexNet_Weights.IMAGENET1K_V1",
+    "backbone_sha256": "7be5be791159472b1fbf3c69796f7cb30dca7ad8466c2df70058c37116cdee02",
+    "calibration_sha256": "df73285e35b22355a2df87cdb6b70b343713b667eddbda73e1977e0c860835c0",
+    "device": "cpu",
+    "dtype": "float32",
+    "normalization": "RGB / 127.5 - 1",
+    "spatial": false,
+    "eval_mode": true,
+    "image_size": "same evaluation copy as PSNR/SSIM; no extra resizing",
+    "source": "https://github.com/richzhang/PerceptualSimilarity"
+  },
+  "aggregation": "Average repeats within scene, then average scenes; paired bootstrap by scene",
+  "rescue_definition": "B not accepted; C accepted and both final PSNR/SSIM exceed B",
+  "risk_definition": "Delta PSNR below 0; extra threshold -1 dB; mean of worst ceil(10%) trials",
+  "review_seed": 20261112,
+  "source_sha256": {
+    "supplement.py": "33b9494516defbbb1a9dd186f2d990de42dbe867b18e89339494d94a407f674c",
+    "review.py": "4417d8060ab120a1b2aba85b03d8a0af0f50822bff35372c244763f08ab8834a",
+    "review_template.html": "a70b9ca4c2a0c892a2a7392dc960af9fc829122523e9bae5f1def7a82d56125c"
+  }
+}

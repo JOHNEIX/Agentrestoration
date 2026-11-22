@@ -66,7 +66,9 @@ def test_ratio(tmp_path, size, status):
 
 def test_movement_and_uncertainty(tmp_path):
     p = tmp_path / "a.png"; Image.new("RGB",(100,100)).save(p)
-    assert structure(p,p,Detection([box(.2)],[box(.4)]),Settings())["severe"]
+    moved=structure(p,p,Detection([box(.2)],[box(.4)]),Settings())
+    assert moved["status"]=="uncertain" and not moved["severe"]
+    assert moved["reason"]=="object_position"
     assert structure(p,p,Detection([box()],[box(.5,"dog")]),Settings())["status"] == "uncertain"
     assert structure(p,p,Detection([box(.2),box(.7)],[box(.2),box(.7)]),Settings())["status"] == "pass"
 
@@ -112,10 +114,33 @@ def test_one_to_one(tmp_path):
     p=tmp_path / "a.png"; Image.new("RGB",(100,100)).save(p)
     check=structure(p,p,Detection([box(.5),box(.51)],[box(.5)]),Settings())
     assert len(check["matches"])==1
-    assert check["status"]=="fail"
-    assert check["severe"]
+    assert check["status"]=="uncertain"
+    assert not check["severe"]
     check=structure(p,p,Detection([box(.5),box(.51)],[box(.5)]),Settings(),baseline_uncertain=True)
     assert check["status"]=="uncertain"
+
+
+@pytest.mark.parametrize("before,after", [
+    ([box(cls="elephant")], [box(cls="bird")]),
+    ([box(.2)], [box(.4)]),
+    ([box(.2),box(.7)], [box(.2)]),
+])
+def test_detector_differences_reach_visual_verification_without_retry(tmp_path,before,after):
+    class API(FakeAPI):
+        comparisons=0
+        def compare(self,original,candidate,checks,job):
+            self.comparisons+=1
+            assert checks["status"]=="uncertain" and not checks["severe"]
+            assert checks["detector_role"]=="advisory"
+            return super().compare(original,candidate,checks,job)
+    p=tmp_path/"in.png";Image.new("RGB",(100,100)).save(p)
+    api=API(accept=True)
+    job=run(p,"denoise",Settings(),api,Detection(before,after),Tool(),tmp_path/"jobs",log_root=tmp_path/"log")
+    assert job.data["status"]=="completed" and api.comparisons==1
+    assert job.data["image_requests_sent"]==1 and job.data["tool_pipeline_started"]==0
+    assert job.data["candidates"][0]["checks"]["original"]==before
+    step=next(s for s in job.data["steps"] if s["id"]=="image_1:structure")
+    assert step["status"]=="success" and step["detector_advisory"]
 
 
 def test_false_accept():

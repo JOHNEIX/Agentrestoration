@@ -83,8 +83,8 @@ def run(path, requirement, settings, api, detector, tool, output="runs", on_even
                 else:
                     checks = structure(original, candidate, detector, settings, baseline_uncertain)
                 candidate_record["checks"] = checks
-                end("success" if checks["status"] == "pass" else "failed",
-                    reason=checks["reason"], needs_review=checks["status"] == "uncertain")
+                end("failed" if checks["status"] == "fail" else "success",
+                    reason=checks["reason"], detector_advisory=checks["status"] == "uncertain")
 
                 if checks["status"] == "fail":
                     candidate_record.update(status="rejected", reason=checks["reason"])

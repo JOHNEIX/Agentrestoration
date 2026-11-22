@@ -144,11 +144,19 @@ class Qwen:
                 paths.append(output)
             focus += ("Images 3 and 4 show the exact selected region (rectangle) before and after restoration, without overlays. "
                       "Assess ALL content there, including sky, grass and other background, not just the main object. ")
+        # Keep detector labels, counts, matching and reliability flags in the record.
+        # The visual comparison receives objective geometry and appearance evidence only.
+        context = {key:checks[key] for key in ("ratio_error", "local_repair", "appearance") if key in checks}
         policy = (
             "Image 1 is original; image 2 is candidate. Evaluate against the ORIGINAL user request below. "
             "The original request defines permitted changes. Preserve only the content and attributes it does not ask to change. "
             "Allow restoration-related changes: denoising can remove grain and alter fine texture; deblurring can sharpen edges; "
             "low-light enhancement can brighten; dehazing can recover contrast and color. Pixel differences alone are not a failure. "
+            "Prioritize visible restoration improvement, preservation of the main subjects and scene composition, "
+            "and obvious unrequested artifacts such as large color blocks or background replacement. "
+            "Ordinary differences in fine texture, small facial details or tiny particles are acceptable restoration variation "
+            "unless the user explicitly asks to preserve those exact details. "
+            "Assess structure_preserved from the visible main subjects, layout and geometry in the two images. "
             "Classify appearance_change: normal_repair for ordinary expected restoration without unexplained color blocks; "
             "user_requested when the visible appearance change is justified by the ORIGINAL request, including explicit "
             "recoloring or background replacement (cite the requested change in reason); "
@@ -159,11 +167,11 @@ class Qwen:
             "Check reported locations against the selection; a rectangle is not an object segmentation mask. "
             "Reject only observed violations of the request. Use uncertain when an apparent violation cannot be confirmed. "
             "Unexpected changes require reject. "
-            "Accept only clear improvement and requested content preservation. "
+            "Accept clear improvement when the main subjects and scene composition are preserved and no obvious "
+            "unrequested artifact is visible. Use uncertain for genuine visual ambiguity in these criteria. "
             "If rejecting, identify the location, the change and the request it violates. "
-            "Detection confidence increases do not prove color or background fidelity. "
             "Original user request: " + json.dumps(job.data.get("requirement",""),ensure_ascii=False) +
-            "\nChecks and appearance evidence: " + json.dumps(checks))
+            "\nImage geometry, repair region and appearance evidence: " + json.dumps(context))
         return self.vlm(paths,focus+policy,Verdict,job)
 
     def image_input(self, original, job, index):

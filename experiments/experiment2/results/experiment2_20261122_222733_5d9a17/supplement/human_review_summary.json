@@ -1,0 +1,85 @@
+{
+  "run_id": "experiment2_20261122_222733_5d9a17",
+  "final_outputs": {
+    "unique_outputs": 63,
+    "unique_annotated": 62,
+    "groups": {
+      "A": {
+        "yes": 5,
+        "no": 55,
+        "uncertain": 0,
+        "pending": 0,
+        "known": 60,
+        "total": 60,
+        "content_error_rate": 0.08333333333333333,
+        "quality": {
+          "improved": 60
+        }
+      },
+      "B": {
+        "yes": 5,
+        "no": 54,
+        "uncertain": 0,
+        "pending": 1,
+        "known": 59,
+        "total": 60,
+        "content_error_rate": 0.0847457627118644,
+        "quality": {
+          "improved": 56,
+          "unchanged": 3,
+          "pending": 1
+        }
+      },
+      "C": {
+        "yes": 5,
+        "no": 54,
+        "uncertain": 0,
+        "pending": 1,
+        "known": 59,
+        "total": 60,
+        "content_error_rate": 0.0847457627118644,
+        "quality": {
+          "improved": 59,
+          "pending": 1
+        }
+      }
+    }
+  },
+  "first_gate": {
+    "B": {
+      "trials": 60,
+      "accepted": 56,
+      "rejected": 4,
+      "human_usable": 55,
+      "rejected_usable": 4,
+      "rejected_usable_rate": 0.07272727272727272,
+      "human_content_errors": 5,
+      "accepted_content_errors": 5,
+      "caught_content_errors": 0
+    },
+    "C": {
+      "trials": 60,
+      "accepted": 56,
+      "rejected": 4,
+      "human_usable": 55,
+      "rejected_usable": 4,
+      "rejected_usable_rate": 0.07272727272727272,
+      "human_content_errors": 5,
+      "accepted_content_errors": 5,
+      "caught_content_errors": 0
+    }
+  },
+  "definitions": {
+    "usable": "content_error=no AND quality=improved",
+    "rejected_usable_rate": "rejected usable first candidates / all usable first candidates",
+    "gate": "effective pipeline decision, including detector and appearance checks",
+    "counting": "paired scene-repeat trials; shared B/C observations are not independent"
+  },
+  "source": {
+    "results_sha256": "d5773abe640ebb12a6e0ed4b2944208b4b89a43475b50db4f25e015d5be44bbf",
+    "labels_sha256": "111bb02527c1be1e3d828c69f0f3eb20e60f3edd570d017314e9cc4c5e8e866b",
+    "code_sha256": "64712bbea4ddf36e84d5cbc4819278e1eef6a0f0b99572de204535cef95f895d"
+  },
+  "restoration_api_calls": 0,
+  "vlm_api_calls": 0
+}

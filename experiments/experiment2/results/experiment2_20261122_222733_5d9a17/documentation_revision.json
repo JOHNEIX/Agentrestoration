@@ -1,0 +1,31 @@
+{
+  "kind": "documentation_and_report_text",
+  "updated_at": "2026-11-22T15:37:41.617182+00:00",
+  "numeric_artifacts_unchanged": {
+    "results.json": "d5773abe640ebb12a6e0ed4b2944208b4b89a43475b50db4f25e015d5be44bbf",
+    "results.csv": "8b3ad10aeb3963fde4b053e7e8bf31da4975fc8270705b89f21cdf4c6dac7929",
+    "summary.json": "892618d9716bd09db8383c4c6e5b7394ebc27898a90bfec1a7d96c7dd1d00ba8",
+    "protocol.json": "afc123a1ef04196ca756a2acaec0840dad66eafc588b65a94c2f1fd6ddf64321",
+    "manifest.json": "e4b296d09e875ab482fe1800fb8fe7a63e8b97d22f8a1df67bd44927cc25c144",
+    "audit.json": "d914a2eff7e88bfca31638f058128aae1f7ae7d86b3d0c2789b257e8cc460532",
+    "baseline_protocol.json": "d8acf6126fc049c64410a17193f4be160dd746461737b2bcd33a811646fbf549",
+    "cleanup.json": "62cb00ea4a64d5cd722b2072bf4ad24d00a3346e706bc03cd3e7b4cff5bdff08",
+    "supplement/scored_rows.json": "a59643b8f14f5dc2f2cfbcf0f6edc6fc2fe0183dba1d10811f6da114b689c773",
+    "supplement/lpips_cache.json": "f1e163a0b25c299ecbb5849e9fb60bc3d645483ec49f5ad8101cf0ac7e5a219d",
+    "supplement/human_labels.json": "111bb02527c1be1e3d828c69f0f3eb20e60f3edd570d017314e9cc4c5e8e866b",
+    "supplement/summary.json": "a2266edab2cbf821dc228e7b1bda7115bfc621ef40167d0257b5418ed820b1cf",
+    "supplement/results_with_lpips.csv": "d21da67aedb26bad7872058563125b9e5db1413e54fbee7ee70e85add141b4ae",
+    "b_non_original/results.csv": "71d8401f1af4ba11313c475682d0919d8e2d4aa49dffa92536508b872cc372ba"
+  },
+  "human_labels_and_statistics_unchanged": true,
+  "execution_source_snapshot_preserved": true,
+  "checked_documents": 13,
+  "checked_local_links": 71,
+  "report_tests_passed": 25,
+  "report_renderers_sha256": {
+    "experiments\\experiment2\\report.py": "47de8df1023fca2afbca9dfaf810bf3212f9d39dfb97fdf49385a2d0b06993f4",
+    "experiments\\experiment2\\supplement.py": "18a845ec4dcb771bb35124c447180ea6f4106844ba6f93f8af2f9f2b936db635",
+    "experiments\\experiment2\\filtered.py": "5c21f9f517851ef7912efde5c4889abdb59c8c1c5a71373a36919c16ac52bcda",
+    "experiments\\analyze_experiment2_review.py": "64712bbea4ddf36e84d5cbc4819278e1eef6a0f0b99572de204535cef95f895d"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "purpose": "Real dedicated-tool inference records",
+  "records": [
+    {
+      "tool": "Restormer",
+      "task": "gaussian_denoising",
+      "variant": "color_gaussian_blind",
+      "directory": "runs/20261112_211901_06a3407e0a",
+      "record_file": "runs/20261112_211901_06a3407e0a/record.json",
+      "output_file": "runs/20261112_211901_06a3407e0a/tool_1.png",
+      "status": "tool_inference_completed_unvalidated",
+      "dimensions": [
+        321,
+        481
+      ],
+      "metrics": {
+        "psnr": 28.071724230106593,
+        "ssim": 0.8443602688900653
+      }
+    },
+    {
+      "tool": "Retinexformer",
+      "task": "low_light",
+      "variant": "LOL-v1",
+      "directory": "runs/20261117_170652_6055bee882",
+      "record_file": "runs/20261117_170652_6055bee882/record.json",
+      "output_file": "runs/20261117_170652_6055bee882/tool_1.png",
+      "status": "tool_inference_completed_unvalidated",
+      "dimensions": [
+        600,
+        400
+      ],
+      "elapsed_seconds": 6.578000000000429
+    },
+    {
+      "tool": "DehazeFormer",
+      "task": "dehazing",
+      "variant": "MCT-mixed",
+      "directory": "runs/20261117_170815_921e1e8bca",
+      "record_file": "runs/20261117_170815_921e1e8bca/record.json",
+      "output_file": "runs/20261117_170815_921e1e8bca/tool_1.png",
+      "status": "tool_inference_completed_unvalidated",
+      "dimensions": [
+        548,
+        412
+      ],
+      "elapsed_seconds": 4.07799999999952
+    }
+  ]
+}

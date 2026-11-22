@@ -59,3 +59,38 @@ def test_oversized_input_is_encoded_under_limit(tmp_path):
     assert (job.path/metadata["path"]).read_bytes()==raw
     assert p.read_bytes()==original
     assert job.data["image_requests_sent"]==0
+
+
+def test_visual_verification_request_excludes_detector_claims(tmp_path):
+    import json
+    from copy import deepcopy
+    from agentrestoration.core import Verdict
+    p=tmp_path/"in.png";Image.new("RGB",(64,64)).save(p)
+    job=Job(tmp_path/"jobs",Settings())
+    job.data["requirement"]="Remove noise and keep the scene."
+    checks=dict(status="uncertain",reason="unreliable_or_truncated_detection",ratio_error=0,
+                original=[dict(**{"class":"elephant"},confidence=.99)],
+                candidate=[dict(**{"class":"parking meter"},confidence=.98)],
+                matches=[],unmatched_original=[0],unmatched_candidate=[0],
+                appearance=dict(status="clear",regions=[]))
+    previous=deepcopy(checks)
+    requests=[]
+    def respond(request):
+        body=json.loads(request.content)
+        content=body["messages"][0]["content"]
+        text=content[0]["text"]
+        requests.append(request)
+        for claim in ("elephant","parking meter","unreliable_or_truncated_detection",
+                      "unmatched_original","confidence"):
+            assert claim not in text
+        assert '"ratio_error": 0' in text and '"appearance"' in text
+        assert job.data["requirement"] in text
+        assert "small facial details" in text and "main subjects and scene composition" in text
+        assert len(content)==3
+        verdict=Verdict(decision="accept",quality_improved=True,structure_preserved=True,
+                        appearance_change="normal_repair",issues=[],reason="Scene preserved",retry_instruction="")
+        return httpx.Response(200,json={"choices":[{"message":{"content":verdict.model_dump_json()}}]})
+    api=Qwen(Settings());api.keys={"image":"fake","vlm":"fake"}
+    api.client=httpx.Client(transport=httpx.MockTransport(respond))
+    assert api.compare(p,p,checks,job).accepted()
+    assert len(requests)==1 and checks==previous

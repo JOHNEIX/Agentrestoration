@@ -37,6 +37,7 @@ tests/results*.xml
 /experiments/runs/
 /experiments/calibration/
 /experiments/results.partial.json
+/content_review_labels*.json
 /experiment_archives/
 /experiments/archives/
 *.log

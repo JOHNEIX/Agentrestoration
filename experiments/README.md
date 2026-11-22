@@ -1,37 +1,40 @@
-# 实验
+# 实验与工具验证
 
-系统代码位于 `src/agentrestoration/`，执行完整修复闭环。本目录独立组织对比方案、校准、评测、报告和实验产物。
+本目录组织实验二及专用工具验证，复用系统适配器和核心闭环。
 
-| 文件 | 用途 |
+实验二比较单次编辑、验证重试和工具回退，使用 20 个 CBSD68_25 场景、每场景 3 次重复。运行与统计规则见 [实验二说明](experiment2/README.md)。
+
+已完成的本次数据见 [结果解读](experiment2/results/experiment2_20261122_222733_5d9a17/结论.md) 和 [完整报告](experiment2/results/experiment2_20261122_222733_5d9a17/report.md)。
+
+追加的 [补充评价](experiment2/results/experiment2_20261122_222733_5d9a17/supplement/report.md) 包含 LPIPS、工具补救、质量下降统计及人工内容复核表。离线复核页面和标注导入方法见 [实验二说明](experiment2/README.md#补充评价与人工复核)。
+
+本轮保留 A 的 60 张首次候选，B/C 已按新规则重跑完成。63 张独立输出中复用 62 份人工标注，1 张新增候选待复核。人工标注与实际验证行为见 [人工复核报告](experiment2/results/experiment2_20261122_222733_5d9a17/supplement/human_review_report.md)。
+
+[B 非原图输出子集](experiment2/results/experiment2_20261122_222733_5d9a17/b_non_original/report.md) 排除 B 返回原图的试次，重新汇总相同试次的 A/B/C 三项质量指标。
+
+```powershell
+.\.venv\Scripts\python.exe experiments/run_experiment2.py
+```
+
+## 专用工具验证
+
+保留 Restormer、Retinexformer、DehazeFormer 的真实推理记录及单工具验证入口。
+
+| 文件 | 内容 |
 | --- | --- |
-| `runner.py` | 样本清单、校准、A/B/C/D 实验和指标计算 |
-| `pipeline.py` | 实验专用流程，保留分组与基线分支 |
-| `verify_pairs.py` | 数据配对检查 |
-| `report.py` | 生成本目录的实验记录和待复核表 |
-| `tool_smoke.py` | 专用工具的独立推理验证 |
-| `runs/` | 实验候选、原图与决策记录 |
-| `results.json` | 48 组历史结果及任务目录索引 |
+| `check_restoration_tool.py` | 运行指定工具，保存输入、输出、哈希、尺寸和推理元数据 |
+| `tool_inference_records.json` | 三种工具已有推理记录的统一索引 |
+| [工具接入验证](工具接入验证.md) | 已验证权重、输入和输出说明 |
+| `runs/` | 本机工具验证产物和实验二运行目录 |
 
-阅读顺序：[实验设计说明](实验设计说明.md) → [实验操作流程](实验操作流程.md) → [实验记录](实验记录.md)。
-
-命令从项目根目录执行：
+在项目根目录运行：
 
 ```powershell
-.\.venv\Scripts\python.exe experiments/runner.py manifest
-.\.venv\Scripts\python.exe experiments/verify_pairs.py
-.\.venv\Scripts\python.exe experiments/runner.py calibrate
-.\.venv\Scripts\python.exe experiments/runner.py run
+.\.venv\Scripts\python.exe experiments/check_restoration_tool.py test_images/01_noise15_statues.png --task gaussian_denoising
+.\.venv\Scripts\python.exe experiments/check_restoration_tool.py test_images/09_low_light_kitchen.png --task low_light
+.\.venv\Scripts\python.exe experiments/check_restoration_tool.py test_images/05_haze_city.jpg --task dehazing
 ```
 
-通过 `results.json` 和实验记录查看已有结果。开始新一轮实验前，按操作流程归档上一轮资料；`run` 发送真实请求并写入本轮汇总。`report.py` 生成报告并重建人工复核表，已填写标签另存归档。
+脚本调用本地专用工具，支持 `--config` 和 `--output`，默认使用 `configs/default.json`，产物保存到 `experiments/runs/`。任务的 `record.json` 与 `events.jsonl` 随图片保存在同一目录。
 
-独立验证专用工具推理：
-
-```powershell
-.\.venv\Scripts\python.exe experiments/check_restoration_tool.py '图片.png' --task low_light
-.\.venv\Scripts\python.exe experiments/check_restoration_tool.py '有雾图片.png' --task dehazing
-```
-
-脚本直接运行真实工具，记录候选、哈希和耗时，产物写入 `experiments/runs/`。验证状态 `tool_inference_completed_unvalidated` 表示工具推理完成；系统闭环另由结构检查和 VLM 比较决定接受结果。
-
-本次新增工具的真实推理和回归结果见 [工具接入验证](工具接入验证.md)。
+`tool_inference_completed_unvalidated` 表示工具推理完成；完整修复任务的接受状态由系统闭环的结构检查和 VLM 效果验证决定。工具运行产物按 `.gitignore` 保存在本地，记录索引和验证入口随源码保存。

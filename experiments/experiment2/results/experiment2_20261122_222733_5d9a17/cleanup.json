@@ -1,0 +1,18 @@
+{
+  "retained_experiment": "F:\\Agentrestoration\\experiments\\runs\\experiment2_20261122_222733_5d9a17",
+  "original_A_verified": 60,
+  "removed": [
+    {
+      "path": "F:\\Agentrestoration\\experiments\\runs\\experiment2_20261122_185055_5a4d05",
+      "files": 2085,
+      "bytes": 2784948303.0
+    },
+    {
+      "path": "F:\\Agentrestoration\\experiments\\experiment2\\results\\experiment2_20261122_185055_5a4d05",
+      "files": 30,
+      "bytes": 4348949.0
+    }
+  ],
+  "reused_annotations": 62,
+  "pending_annotations": 1
+}

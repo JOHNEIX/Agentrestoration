@@ -6,9 +6,9 @@ from PIL import Image, ImageDraw, ImageOps
 
 LABELS = {"accepted": "已接受", "rejected": "未通过", "executing": "正在处理", "execution_failed": "执行失败",
           "original": "已保留"}
-REASONS = {"aspect_ratio": "宽高比变化", "object_position": "目标位置变化", "matched": "主要目标匹配",
-           "suspected_count_change": "目标对应关系需复核", "high_confidence_suspected_count_change": "疑似目标增删",
-           "unreliable_or_truncated_detection": "目标检测需复核"}
+REASONS = {"aspect_ratio": "宽高比变化", "object_position": "检测框位置差异（参考）", "matched": "主要目标匹配",
+           "suspected_count_change": "目标对应关系差异（参考）", "high_confidence_suspected_count_change": "疑似目标增删",
+           "unreliable_or_truncated_detection": "目标检测信息不足（参考）"}
 
 
 def candidate_label(candidate):

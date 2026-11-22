@@ -1,0 +1,41 @@
+{
+  "completed_trials": 60,
+  "outputs": 180,
+  "scenes": 20,
+  "repeats": 3,
+  "A_hashes_and_metrics_preserved": 60,
+  "first_candidates_equal": true,
+  "dataset_hashes_verified": true,
+  "frozen_source_verified": true,
+  "independent_BC_cache_verified": true,
+  "all_active_file_paths_self_contained": true,
+  "unique_output_metrics_recomputed": 63,
+  "metric_tolerance": 1e-10,
+  "actual_new_requests": {
+    "image": 4,
+    "vlm": 67
+  },
+  "actual_tools": 3,
+  "lpips_cache_pairs": 83,
+  "human_labels_reused": 62,
+  "unique_outputs": 63,
+  "pending_human_review": [
+    {
+      "sample_id": "H037",
+      "scene": "216081",
+      "members": [
+        {
+          "group": "B",
+          "repeat": 1
+        },
+        {
+          "group": "C",
+          "repeat": 1
+        }
+      ]
+    }
+  ],
+  "full_tests_passed": 147,
+  "source_results_sha256": "d5773abe640ebb12a6e0ed4b2944208b4b89a43475b50db4f25e015d5be44bbf",
+  "evaluation": "RGB; original dimensions/ratio gate; LANCZOS to reference; unchanged PSNR/SSIM/LPIPS protocol"
+}
